@@ -1,4 +1,4 @@
-module frontendmasters.com/reelingit
+module betocosta.com/reelingit
 
 go 1.24.5
 
