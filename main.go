@@ -1,4 +1,4 @@
-// package govanillajsmovies
+// run with 'air'
 package main
 
 import (
@@ -13,6 +13,6 @@ func main() {
 	const addr = ":8080"
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {
-		log.Fatal("Server failed: %v", err)
+		log.Fatalf("Server failed: %v", err)
 	}
 }
