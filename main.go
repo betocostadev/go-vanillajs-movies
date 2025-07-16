@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"betocosta.com/reelingit/handlers"
 	"betocosta.com/reelingit/logger"
 )
 
@@ -12,7 +13,11 @@ func main() {
 	// Initialize logger
 	logInstance := initializeLogger()
 
+	// Handler for static files (frontend)
 	http.Handle("/", http.FileServer(http.Dir("public")))
+
+	movieHandler := handlers.NewMovieHandler(logInstance)
+	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
 
 	// Start server
 	const addr = ":8080"
