@@ -13,16 +13,18 @@ func main() {
 	// Initialize logger
 	logInstance := initializeLogger()
 
+	movieHandler := handlers.NewMovieHandler(logInstance)
+
+	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
+	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
+
 	// Handler for static files (frontend)
 	http.Handle("/", http.FileServer(http.Dir("public")))
-
-	movieHandler := handlers.NewMovieHandler(logInstance)
-	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
+	// fmt.Println("Serving files")
 
 	// Start server
 	const addr = ":8080"
 	logInstance.Info("Server starting on " + addr)
-	// fmt.Println("Serving files")
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		logInstance.Error("Server failed to start", err)
 		log.Fatalf("Server failed: %v", err)

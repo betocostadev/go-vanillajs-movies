@@ -68,3 +68,39 @@ func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
 		h.logger.Info("Successfully served top movies")
 	}
 }
+
+func (h *MovieHandler) GetRandomMovies(w http.ResponseWriter, r *http.Request) {
+	movies := []models.Movie{
+		{
+			ID:          7,
+			TMDB_ID:     1011,
+			Title:       "The Hacker 237",
+			ReleaseYear: 2022,
+			Genres:      []models.Genre{{ID: 6, Name: "Thriller"}},
+			Keywords:    []string{"hacking", "cybercrime"},
+			Casting:     []models.Actor{{ID: 6, FirstName: "Janex", LastName: "Doex"}},
+		},
+		{
+			ID:          5,
+			TMDB_ID:     1012,
+			Title:       "Space Dreamsx",
+			ReleaseYear: 2020,
+			Genres:      []models.Genre{{ID: 5, Name: "Sci-Fi"}},
+			Keywords:    []string{"space", "exploration"},
+			Casting:     []models.Actor{{ID: 5, FirstName: "John", LastName: "Star"}},
+		},
+		{
+			ID:          33,
+			TMDB_ID:     1013,
+			Title:       "The Lost City xxx",
+			ReleaseYear: 2019,
+			Genres:      []models.Genre{{ID: 4, Name: "Adventure"}},
+			Keywords:    []string{"jungle", "treasure"},
+			Casting:     []models.Actor{{ID: 4, FirstName: "Laras", LastName: "Hunter"}},
+		},
+	}
+
+	if h.writeJSONResponse(w, movies) == nil {
+		h.logger.Info("Successfully served random movies")
+	}
+}
