@@ -4,12 +4,20 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"betocosta.com/reelingit/handlers"
 	"betocosta.com/reelingit/logger"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file:", err)
+	}
+
 	// Initialize logger
 	logInstance := initializeLogger()
 
@@ -23,7 +31,11 @@ func main() {
 	// fmt.Println("Serving files")
 
 	// Start server
-	const addr = ":8080"
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // default port
+	}
+	addr := ":" + port
 	logInstance.Info("Server starting on " + addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		logInstance.Error("Server failed to start", err)
