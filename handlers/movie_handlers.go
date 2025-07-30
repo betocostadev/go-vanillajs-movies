@@ -4,18 +4,19 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"betocosta.com/reelingit/data"
 	"betocosta.com/reelingit/logger"
-	"betocosta.com/reelingit/models"
 )
 
 type MovieHandler struct {
-	logger *logger.Logger
+	Storage data.MovieStorage
+	Logger  *logger.Logger
 }
 
 // NewMovieHandler creates a new MovieHandler instance
 func NewMovieHandler(logger *logger.Logger) *MovieHandler {
 	return &MovieHandler{
-		logger: logger,
+		Logger: logger,
 	}
 }
 
@@ -23,17 +24,31 @@ func NewMovieHandler(logger *logger.Logger) *MovieHandler {
 func (h *MovieHandler) writeJSONResponse(w http.ResponseWriter, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(data); err != nil {
-		h.logger.Error("Failed to encode response", err)
+		h.Logger.Error("Failed to encode response", err)
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return err
 	}
 	return nil
 }
 
+func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
+	movies, err := h.Storage.GetTopMovies()
+	if err != nil {
+		http.Error(w, "Internal error fetching top Movies", 500)
+		h.Logger.Error("Get Top Movies Error", err)
+	}
+	h.writeJSONResponse(w, movies)
+
+	if h.writeJSONResponse(w, movies) == nil {
+		h.Logger.Info("Successfully served top movies")
+	}
+}
+
 // writer to send data back to the client
 // reader to get the data
 // wrap the handler before the function name
-func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
+// hardcoded for when we were not using the DB, just fake data
+/* func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
 	movies := []models.Movie{
 		{
 			ID:          1,
@@ -65,42 +80,6 @@ func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if h.writeJSONResponse(w, movies) == nil {
-		h.logger.Info("Successfully served top movies")
+		h.Logger.Info("Successfully served top movies")
 	}
-}
-
-func (h *MovieHandler) GetRandomMovies(w http.ResponseWriter, r *http.Request) {
-	movies := []models.Movie{
-		{
-			ID:          7,
-			TMDB_ID:     1011,
-			Title:       "The Hacker 237",
-			ReleaseYear: 2022,
-			Genres:      []models.Genre{{ID: 6, Name: "Thriller"}},
-			Keywords:    []string{"hacking", "cybercrime"},
-			Casting:     []models.Actor{{ID: 6, FirstName: "Janex", LastName: "Doex"}},
-		},
-		{
-			ID:          5,
-			TMDB_ID:     1012,
-			Title:       "Space Dreamsx",
-			ReleaseYear: 2020,
-			Genres:      []models.Genre{{ID: 5, Name: "Sci-Fi"}},
-			Keywords:    []string{"space", "exploration"},
-			Casting:     []models.Actor{{ID: 5, FirstName: "John", LastName: "Star"}},
-		},
-		{
-			ID:          33,
-			TMDB_ID:     1013,
-			Title:       "The Lost City xxx",
-			ReleaseYear: 2019,
-			Genres:      []models.Genre{{ID: 4, Name: "Adventure"}},
-			Keywords:    []string{"jungle", "treasure"},
-			Casting:     []models.Actor{{ID: 4, FirstName: "Laras", LastName: "Hunter"}},
-		},
-	}
-
-	if h.writeJSONResponse(w, movies) == nil {
-		h.logger.Info("Successfully served random movies")
-	}
-}
+} */

@@ -16,6 +16,8 @@ func main() {
 	// Database connection string for your remote PostgreSQL database
 	// Moved to env
 	// connStr := "postgres://username:password@remote-host:port/database?sslmode=disable"
+	// If you need to feed the data, just run:
+	// go run install.go
 
 	// Load environment variables from .env file
 	err := godotenv.Load("../.env")
