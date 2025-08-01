@@ -9,14 +9,15 @@ import (
 )
 
 type MovieHandler struct {
-	Storage data.MovieStorage
-	Logger  *logger.Logger
+	storage data.MovieStorage
+	logger  *logger.Logger
 }
 
 // NewMovieHandler creates a new MovieHandler instance
-func NewMovieHandler(logger *logger.Logger) *MovieHandler {
+func NewMovieHandler(storage data.MovieStorage, log *logger.Logger) *MovieHandler {
 	return &MovieHandler{
-		Logger: logger,
+		storage: storage,
+		logger:  log,
 	}
 }
 
@@ -24,7 +25,7 @@ func NewMovieHandler(logger *logger.Logger) *MovieHandler {
 func (h *MovieHandler) writeJSONResponse(w http.ResponseWriter, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(data); err != nil {
-		h.Logger.Error("Failed to encode response", err)
+		h.logger.Error("JSON encoding error", err)
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return err
 	}
@@ -32,15 +33,15 @@ func (h *MovieHandler) writeJSONResponse(w http.ResponseWriter, data interface{}
 }
 
 func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
-	movies, err := h.Storage.GetTopMovies()
+	movies, err := h.storage.GetTopMovies()
 	if err != nil {
 		http.Error(w, "Internal error fetching top Movies", 500)
-		h.Logger.Error("Get Top Movies Error", err)
+		h.logger.Error("Get Top Movies Error", err)
 	}
 	h.writeJSONResponse(w, movies)
 
 	if h.writeJSONResponse(w, movies) == nil {
-		h.Logger.Info("Successfully served top movies")
+		h.logger.Info("Successfully served top movies")
 	}
 }
 
