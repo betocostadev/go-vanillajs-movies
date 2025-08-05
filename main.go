@@ -14,6 +14,14 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func initializeLogger() *logger.Logger {
+	logInstance, err := logger.NewLogger("movie-service.log")
+	if err != nil {
+		log.Fatalf("Failed to initialize logger: %v", err)
+	}
+	return logInstance
+}
+
 func main() {
 	// Initialize logger
 	logInstance := initializeLogger()
@@ -55,8 +63,14 @@ func main() {
 	movieHandler.Storage = movieRepo
 	movieHandler.Logger = logInstance
 
+	// Initialize handlers
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
 	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
+	http.HandleFunc("/api/movies/search", movieHandler.SearchMovies)
+	http.HandleFunc("/api/movies/", movieHandler.GetMovie)
+	http.HandleFunc("/api/genres", movieHandler.GetGenres)
+	http.HandleFunc("/api/account/register", movieHandler.GetGenres)
+	http.HandleFunc("/api/account/authenticate", movieHandler.GetGenres)
 
 	// Handler for static files (frontend)
 	http.Handle("/", http.FileServer(http.Dir("public")))
@@ -74,12 +88,4 @@ func main() {
 		log.Fatalf("Server failed: %v", err)
 	}
 
-}
-
-func initializeLogger() *logger.Logger {
-	logInstance, err := logger.NewLogger("movie-service.log")
-	if err != nil {
-		log.Fatalf("Failed to initialize logger: %v", err)
-	}
-	return logInstance
 }
