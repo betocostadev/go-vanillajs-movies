@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"betocosta.com/reelingit/data"
+	"betocosta.com/reelingit/handlers"
 	"betocosta.com/reelingit/logger"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -39,24 +40,23 @@ func main() {
 	// Initialize Data Repository for Movies
 	movieRepo, err := data.NewMovieRepository(db, logInstance)
 	if err != nil {
-		log.Fatalf("Failed to initialize movierepository")
+		log.Fatalf("Failed to initialize movie repository: %v", err)
 	}
 
 	// It doest have complains in this way because we were not exporting storage
 	// we were using storage instead of Storage in our movieHandle file
-	// TODO - Decide on how to cann the movie handler
 	// movieHandler := handlers.MovieHandler{
 	// 	storage: movieRepo, logger: logInstance,
 	// }
 	// like new MovieHandler(movieRepo, logInstance)
 
 	// now with Storage in movie_handlers.go we made it public and can access like below
-	// movieHandler := handlers.MovieHandler{}
-	// movieHandler.Storage = movieRepo
-	// movieHandler.Logger = logInstance
+	movieHandler := handlers.MovieHandler{}
+	movieHandler.Storage = movieRepo
+	movieHandler.Logger = logInstance
 
 	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
-	// http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
+	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
 
 	// Handler for static files (frontend)
 	http.Handle("/", http.FileServer(http.Dir("public")))
