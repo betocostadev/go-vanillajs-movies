@@ -10,12 +10,14 @@ import (
 	"betocosta.com/reelingit/data"
 	"betocosta.com/reelingit/handlers"
 	"betocosta.com/reelingit/logger"
+	"betocosta.com/reelingit/routes"
+	"betocosta.com/reelingit/utils"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func initializeLogger() *logger.Logger {
-	logInstance, err := logger.NewLogger("movie-service.log")
+	logInstance, err := logger.NewLogger(utils.LogFileName)
 	if err != nil {
 		log.Fatalf("Failed to initialize logger: %v", err)
 	}
@@ -53,10 +55,12 @@ func main() {
 
 	// It doest have complains in this way because we were not exporting storage
 	// we were using storage instead of Storage in our movieHandle file
+	// We could use this way like a factory
+	// movieHandler := handlers.NewMovieHandler(movieRepo, logInstance)
+	// or
 	// movieHandler := handlers.MovieHandler{
 	// 	storage: movieRepo, logger: logInstance,
 	// }
-	// like new MovieHandler(movieRepo, logInstance)
 
 	// now with Storage in movie_handlers.go we made it public and can access like below
 	movieHandler := handlers.MovieHandler{}
@@ -64,13 +68,14 @@ func main() {
 	movieHandler.Logger = logInstance
 
 	// Initialize handlers
-	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
-	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
-	http.HandleFunc("/api/movies/search", movieHandler.SearchMovies)
-	http.HandleFunc("/api/movies/", movieHandler.GetMovie)
-	http.HandleFunc("/api/genres", movieHandler.GetGenres)
-	http.HandleFunc("/api/account/register", movieHandler.GetGenres)
-	http.HandleFunc("/api/account/authenticate", movieHandler.GetGenres)
+	// Order is important
+	http.HandleFunc(routes.MoviesTopRoute, movieHandler.GetTopMovies)
+	http.HandleFunc(routes.MoviesRandomRoute, movieHandler.GetRandomMovies)
+	http.HandleFunc(routes.MoviesSearchRoute, movieHandler.SearchMovies)
+	http.HandleFunc(routes.MoviesRoute, movieHandler.GetMovie)
+	http.HandleFunc(routes.GenresRoute, movieHandler.GetGenres)
+	http.HandleFunc(routes.AccountRegisterRoute, movieHandler.GetGenres)
+	http.HandleFunc(routes.AccountAuthenticateRoute, movieHandler.GetGenres)
 
 	// Handler for static files (frontend)
 	http.Handle("/", http.FileServer(http.Dir("public")))
@@ -79,7 +84,7 @@ func main() {
 	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" // default port
+		port = utils.DefaultPort // default port
 	}
 	addr := ":" + port
 	logInstance.Info("Server starting on " + addr)
