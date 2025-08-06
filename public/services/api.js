@@ -1,13 +1,15 @@
 export const API = {
   baseURL: '/api/',
   getTopMovies: async () => {
+    // const response = await fetch('/api/movies/top')
+    // const result = await response.json()
     return await API.fetch('movies/top')
   },
   getRandomMovies: async () => {
     return await API.fetch('movies/random')
   },
   getMovieById: async (id) => {
-    return await API.fetch(`/movies/${id}`)
+    return await API.fetch(`movies/${id}`)
   },
   searchMovies: async (query, order, genre) => {
     return await API.fetch(`/movies/search`, { query, order, genre })
