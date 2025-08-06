@@ -3,15 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reeling it</title>
+  <title>Movies DB</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <script src="/app.js" type="module" defer></script>
+  <base href="/">
 </head>
 <body>
-  <main>
-    <h1>Reeling it!</h1>
+  <header>
+    <h1><img src="images/logo.png" height="35" alt="ReelingIt"/></h1>
+    <nav>
+      <ul>
+        <li><a class="navlink" href="/">Movies</a></li>
+        <li><a class="navlink" href="/account/favorites">Favorites</a></li>
+        <li><a class="navlink" href="/account/watchlist">Watchlist</a></li>
+        <li><a class="navlink" href="/account/">Account</a></li>
+      </ul>
+    </nav>
     <div>
-      <img src="images/logo.png" alt="Reeling logo"/>
+      <form onsubmit="app.search(event)">
+        <input type="search" placeholder="Search movie..."> 
+      </form>
+    </div>
+  </header>
+  <main>
+    <h1>Movies DB!</h1>
+    <div>
       <h3>New</h3>
     </div>
   </main>
+  <footer>
+    <p>Movies DB - ReelingIt (Frontend Masters)</p>
+  </footer>
 </body>
 </html>
