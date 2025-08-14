@@ -1,4 +1,5 @@
 import { HomePage } from './components/HomePage.js'
+import './components/AnimatedLoading.js'
 import { API } from './services/API.js'
 // console.log(API)
 window.addEventListener('DOMContentLoaded', () => {
