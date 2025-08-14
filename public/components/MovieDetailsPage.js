@@ -1,12 +1,11 @@
 import API from '../services/API.js'
 
 export class MovieDetailsPage extends HTMLElement {
-  id = null
   movie = null
 
-  async render() {
+  async render(id) {
     try {
-      this.movie = await API.getMovieById(this.movie)
+      this.movie = await API.getMovieById(id)
     } catch (error) {
       // TODO: Alert the user
       console.log(error)
@@ -18,12 +17,44 @@ export class MovieDetailsPage extends HTMLElement {
 
     this.querySelector('h2').textContent = this.movie.title
     this.querySelector('h3').textContent = this.movie.tagline
+    this.querySelector('img').src = this.movie.poster_url
+    this.querySelector('#trailer').dataset.url = this.movie.trailer_url
+    this.querySelector('#overview').textContent = this.movie.overview
+    this.querySelector('#metadata').innerHTML = `                        
+            <dt>Release Date</dt>
+            <dd>${this.movie.release_year}</dd>                        
+            <dt>Score</dt>
+            <dd>${this.movie.score} / 10</dd>                        
+            <dt>Original languae</dt>
+            <dd>${this.movie.language}</dd>                        
+        `
+
+    const ulGenres = this.querySelector('#genres')
+    ulGenres.innerHTML = ''
+    this.movie.genres.forEach((genre) => {
+      const li = document.createElement('li')
+      li.textContent = genre.name
+      ulGenres.appendChild(li)
+    })
+
+    const ulCast = this.querySelector('#cast')
+    ulCast.innerHTML = ''
+    this.movie.casting.forEach((actor) => {
+      const li = document.createElement('li')
+      li.innerHTML = `
+                <img src="${
+                  actor.image_url ?? '/images/generic_actor.jpg'
+                }" alt="Picture of ${actor.last_name}">
+                <p>${actor.first_name} ${actor.last_name}</p>
+            `
+      ulCast.appendChild(li)
+    })
   }
 
   // By default connectedCallback is not an async function
   connectedCallback() {
-    this.movie = 14 // TODO - get the movie id
-    this.render()
+    const id = 14 // TODO - get the movie id
+    this.render(id)
   }
 }
 
