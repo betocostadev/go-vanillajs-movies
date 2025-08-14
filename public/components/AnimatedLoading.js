@@ -4,9 +4,9 @@ class AnimatedLoading extends HTMLElement {
   }
   connectedCallback() {
     // grabs the dataset of elements. Like data-element, data-testid
-    const elements = this.dataset.elements
-    const width = this.dataset.width
-    const height = this.dataset.height
+    const elements = this.dataset.elements ?? 1
+    const width = this.dataset.width ?? '100px'
+    const height = this.dataset.height ?? '10px'
 
     for (let i = 0; i < elements; i++) {
       const wrapper = document.createElement('div')
