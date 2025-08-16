@@ -1,6 +1,6 @@
-import { HomePage } from '../components/HomePage'
-import { MovieDetailsPage } from '../components/MovieDetailsPage'
-import { MoviePage } from '../components/MoviePage'
+import { HomePage } from '../components/HomePage.js'
+import { MovieDetailsPage } from '../components/MovieDetailsPage.js'
+import { MoviePage } from '../components/MoviePage.js'
 
 // Use regexes to generate dynamic routes
 export const routes = [
@@ -13,27 +13,28 @@ export const routes = [
     component: MoviePage,
   },
   {
-    path: /\/movies\/(\d+)/, // /movies/14
+    // /movies/14
+    path: /\/movies\/(\d+)/,
     component: MovieDetailsPage,
   },
-  {
-    path: '/account/register',
-    component: RegisterPage,
-  },
-  {
-    path: '/account/login',
-    component: LoginPage,
-  },
-  {
-    path: '/account/',
-    component: AccountPage,
-  },
-  {
-    path: '/account/favorites',
-    component: FavoritesPage,
-  },
-  {
-    path: '/account/watchlist',
-    component: WatchlistPage,
-  },
+  // {
+  //   path: '/account/register',
+  //   component: RegisterPage,
+  // },
+  // {
+  //   path: '/account/login',
+  //   component: LoginPage,
+  // },
+  // {
+  //   path: '/account/',
+  //   component: AccountPage,
+  // },
+  // {
+  //   path: '/account/favorites',
+  //   component: FavoritesPage,
+  // },
+  // {
+  //   path: '/account/watchlist',
+  //   component: WatchlistPage,
+  // },
 ]

@@ -53,7 +53,7 @@ export class MovieDetailsPage extends HTMLElement {
 
   // By default connectedCallback is not an async function
   connectedCallback() {
-    const id = 14 // TODO - get the movie id
+    const id = this.params[0]
     this.render(id)
   }
 }
