@@ -3,6 +3,16 @@ import { routes } from './Routes.js'
 // One instance of a Router only - Singleton
 export const Router = {
   init: () => {
+    // Enhance current links
+    document.querySelectorAll('a.navlink').forEach((a) => {
+      a.addEventListener('click', (event) => {
+        event.preventDefault()
+        const href = a.getAttribute('href')
+        console.log(href)
+        Router.go(href)
+      })
+    })
+
     window.addEventListener('popstate', () => {
       Router.go(location.pathname, false)
     })

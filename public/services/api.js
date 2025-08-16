@@ -17,15 +17,17 @@ export const API = {
   getGenres: async () => {
     return await API.fetch('genres')
   },
-  fetch: async (service, args) => {
+  fetch: async (serviceName, args) => {
     try {
       const queryString = args ? new URLSearchParams(args).toString() : ''
-      const response = await fetch(API.baseURL + service + '?' + queryString)
+      const response = await fetch(
+        API.baseURL + serviceName + '?' + queryString
+      )
       const result = await response.json()
       return result
     } catch (e) {
       console.error(e)
-      app.showError()
+      // app.showError()
     }
   },
 }

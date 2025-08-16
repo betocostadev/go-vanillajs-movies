@@ -1,11 +1,13 @@
 import API from '../services/API.js'
 
 export class MovieDetailsPage extends HTMLElement {
+  id = null
   movie = null
 
-  async render(id) {
+  async render() {
+    console.log('received id: ', this.id)
     try {
-      this.movie = await API.getMovieById(id)
+      this.movie = await API.getMovieById(this.id)
     } catch (error) {
       // TODO: Alert the user
       console.log(error)
@@ -53,8 +55,8 @@ export class MovieDetailsPage extends HTMLElement {
 
   // By default connectedCallback is not an async function
   connectedCallback() {
-    const id = this.params[0]
-    this.render(id)
+    this.id = this.params[0]
+    this.render()
   }
 }
 

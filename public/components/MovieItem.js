@@ -5,15 +5,18 @@ export class MovieItem extends HTMLElement {
   }
 
   connectedCallback() {
+    const url = '/movies/' + this.movie.id
     // create the template - in this case we will just create it here instead of importing it
     this.innerHTML = `
-      <a href="#">
-        <article>
-          <img src="${this.movie.poster_url}" alt="${this.movie.title} poster" />
-          <p>${this.movie.title} (${this.movie.release_year})</p>
-        </article>
-      </a>
-    `
+            <a class="navlink" href="#" 
+                onclick="event.preventDefault();app.Router.go('${url}')">
+                <article>
+                    <img src="${this.movie.poster_url}" 
+                        alt="${this.movie.title} Poster">
+                    <p>${this.movie.title} (${this.movie.release_year})</p>
+                </article>
+            </a>
+        `
   }
 }
 
