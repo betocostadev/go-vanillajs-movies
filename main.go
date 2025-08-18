@@ -77,7 +77,17 @@ func main() {
 	http.HandleFunc(routes.AccountRegisterRoute, movieHandler.GetGenres)
 	http.HandleFunc(routes.AccountAuthenticateRoute, movieHandler.GetGenres)
 
+	catchAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./public/index.html")
+	}
+
+	// Catch All
+	http.HandleFunc("/movies/", catchAllClientRoutesHandler)
+	http.HandleFunc("/genres/", catchAllClientRoutesHandler)
+	http.HandleFunc("/account/", catchAllClientRoutesHandler)
+
 	// Handler for static files (frontend)
+	// Files serve as the last fallback
 	http.Handle("/", http.FileServer(http.Dir("public")))
 	// fmt.Println("Serving files")
 
