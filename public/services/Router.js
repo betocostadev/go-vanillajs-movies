@@ -8,7 +8,6 @@ export const Router = {
       a.addEventListener('click', (event) => {
         event.preventDefault()
         const href = a.getAttribute('href')
-        console.log(href)
         Router.go(href)
       })
     })
@@ -54,7 +53,27 @@ export const Router = {
       pageElement.textContent = 'Page not found'
     }
     // I have a page for the URL
-    document.querySelector('main').innerHTML = ''
-    document.querySelector('main').appendChild(pageElement)
+    function updatePage() {
+      document.querySelector('main').innerHTML = ''
+      document.querySelector('main').appendChild(pageElement)
+    }
+
+    // Use view transition to apply a screen transition - like a screenshot of the old page
+    if (!document.startViewTransition) {
+      updatePage()
+    } else {
+      const oldPage = document.querySelector('main').firstElementChild
+      if (oldPage) {
+        oldPage.style.viewTransitionName = 'old'
+      }
+      pageElement.style.viewTransitionName = 'new'
+
+      document.startViewTransition(() => {
+        updatePage()
+        // Clear the transition names after the transition
+        if (oldPage) oldPage.style.viewTransitionName = ''
+        pageElement.style.viewTransitionName = ''
+      })
+    }
   },
 }
