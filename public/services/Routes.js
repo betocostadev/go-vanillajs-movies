@@ -1,6 +1,6 @@
 import { HomePage } from '../components/HomePage.js'
 import { MovieDetailsPage } from '../components/MovieDetailsPage.js'
-import { MoviePage } from '../components/MoviePage.js'
+import { MoviesPage } from '../components/MoviesPage.js'
 
 // Use regexes to generate dynamic routes
 export const routes = [
@@ -10,7 +10,7 @@ export const routes = [
   },
   {
     path: '/movies/',
-    component: MoviePage,
+    component: MoviesPage,
   },
   {
     // /movies/14

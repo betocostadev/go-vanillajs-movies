@@ -22,9 +22,10 @@ window.app = {
     document.getElementById('alert-modal').close()
   },
   search: (event) => {
-    console.log('Search called')
     event.preventDefault()
-    const keywords = document.querySelector('input[type=search]').value
-    // Call api, etc
+    const query = document.querySelector('input[type=search]').value
+    if (query.length > 1) {
+      app.Router.go(`/movies/?query=${query}`)
+    }
   },
 }
