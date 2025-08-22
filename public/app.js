@@ -28,4 +28,16 @@ window.app = {
       app.Router.go(`/movies/?query=${query}`)
     }
   },
+  searchOrderChange: (order) => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const q = urlParams.get('query')
+    const genre = urlParams.get('genre') ?? ''
+    app.Router.go(`/movies/?query=${q}&order=${order}&genre=${genre}`)
+  },
+  searchFilterChange: (genre) => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const q = urlParams.get('query')
+    const order = urlParams.get('order') ?? ''
+    app.Router.go(`/movies/?query=${q}&order=${order}&genre=${genre}`)
+  },
 }
