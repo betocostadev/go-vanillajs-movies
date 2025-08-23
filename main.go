@@ -53,6 +53,12 @@ func main() {
 		log.Fatalf("Failed to initialize movie repository: %v", err)
 	}
 
+	//  Initialize Account repository for Users
+	accountRepo, err := data.NewAccountRepository(db, logInstance)
+	if err != nil {
+		log.Fatalf("Failed to initialize account repository: %v", err)
+	}
+
 	// It doest have complains in this way because we were not exporting storage
 	// we were using storage instead of Storage in our movieHandle file
 	// We could use this way like a factory
@@ -67,15 +73,19 @@ func main() {
 	movieHandler.Storage = movieRepo
 	movieHandler.Logger = logInstance
 
+	accountHandler := handlers.NewAccountHandler(accountRepo, logInstance)
+
 	// Initialize handlers
 	// Order is important
+	// Movies
 	http.HandleFunc(routes.MoviesTopRoute, movieHandler.GetTopMovies)
 	http.HandleFunc(routes.MoviesRandomRoute, movieHandler.GetRandomMovies)
 	http.HandleFunc(routes.MoviesSearchRoute, movieHandler.SearchMovies)
 	http.HandleFunc(routes.MoviesRoute, movieHandler.GetMovie)
 	http.HandleFunc(routes.GenresRoute, movieHandler.GetGenres)
-	http.HandleFunc(routes.AccountRegisterRoute, movieHandler.GetGenres)
-	http.HandleFunc(routes.AccountAuthenticateRoute, movieHandler.GetGenres)
+	// Account
+	http.HandleFunc(routes.AccountRegisterRoute, accountHandler.Register)
+	http.HandleFunc(routes.AccountAuthenticateRoute, accountHandler.Authenticate)
 
 	catchAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/index.html")

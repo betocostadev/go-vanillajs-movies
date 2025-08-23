@@ -12,6 +12,6 @@ const (
 	GenresRoute = "/api/genres"
 
 	// Account API endpoints
-	AccountRegisterRoute     = "/api/account/register"
-	AccountAuthenticateRoute = "/api/account/authenticate"
+	AccountRegisterRoute     = "/api/account/register/"
+	AccountAuthenticateRoute = "/api/account/authenticate/"
 )
