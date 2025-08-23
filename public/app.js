@@ -10,6 +10,10 @@ window.addEventListener('DOMContentLoaded', () => {
   // document.querySelector('main').appendChild(new HomePage())
 })
 
+const getFieldValueById = (id) => {
+  return document.getElementById(id).value
+}
+
 window.app = {
   api: API,
   Router,
@@ -39,5 +43,37 @@ window.app = {
     const q = urlParams.get('query')
     const order = urlParams.get('order') ?? ''
     app.Router.go(`/movies/?query=${q}&order=${order}&genre=${genre}`)
+  },
+  register: async (event) => {
+    event.preventDefault()
+    const name = getFieldValueById('register-name')
+    const email = getFieldValueById('register-email')
+    const password = getFieldValueById('register-password')
+    const passwordConfirm = getFieldValueById('register-password-confirm')
+
+    const errors = []
+    if (name.length < 4) errors.push('Enter your complete name.')
+    if (password.length < 7)
+      errors.push('Your password must have at least 7 characters.')
+    if (email.length < 4) errors.push('Enter your complete e-mail.')
+    if (password !== passwordConfirm)
+      errors.push('Your passwords don not match.')
+
+    if (errors.length === 0) {
+      const response = await API.register(name, email, password)
+      if (response.success) {
+        console.log(response)
+        app.Router.go('/account/')
+      } else {
+        // show server error
+        app.showError(response.message)
+      }
+    } else {
+      app.showError(errors)
+    }
+  },
+  login: (event) => {
+    console.log(event)
+    event.preventDefault()
   },
 }
