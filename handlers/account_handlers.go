@@ -108,7 +108,7 @@ func (h *AccountHandler) Authenticate(w http.ResponseWriter, r *http.Request) {
 	// Return success response
 	response := AuthResponse{
 		Success: success,
-		Message: "User Authenticated at: " + time.Now().Format("2006-01-02 15:04:05"),
+		Message: "User Authenticated at: " + time.Now().Format("Jan 2, 2006 at 3:04PM"),
 	}
 
 	if err := h.writeJSONResponse(w, response); err == nil {
