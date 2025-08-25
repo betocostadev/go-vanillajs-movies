@@ -17,7 +17,7 @@ const getFieldValueById = (id) => {
 window.app = {
   api: API,
   Router,
-  showError: (message = 'There was an error.', goToHome = true) => {
+  showError: (message = 'There was an error.', goToHome = false) => {
     document.getElementById('alert-modal').showModal()
     document.querySelector('#alert-modal p').textContent = message
     if (goToHome) app.Router.go('/')
@@ -46,12 +46,12 @@ window.app = {
   },
   register: async (event) => {
     event.preventDefault()
+    const errors = []
     const name = getFieldValueById('register-name')
     const email = getFieldValueById('register-email')
     const password = getFieldValueById('register-password')
     const passwordConfirm = getFieldValueById('register-password-confirm')
 
-    const errors = []
     if (name.length < 4) errors.push('Enter your complete name.')
     if (password.length < 7)
       errors.push('Your password must have at least 7 characters.')
@@ -69,11 +69,30 @@ window.app = {
         app.showError(response.message)
       }
     } else {
-      app.showError(errors)
+      app.showError(errors.join('. '))
     }
   },
-  login: (event) => {
-    console.log(event)
+  login: async (event) => {
     event.preventDefault()
+    const errors = []
+    const email = getFieldValueById('login-email')
+    const password = getFieldValueById('login-password')
+
+    if (password.length < 7)
+      errors.push('Your password must have at least 7 characters.')
+    if (email.length < 4) errors.push('Enter your complete e-mail.')
+
+    if (errors.length === 0) {
+      const response = await API.login(email, password)
+      if (response.success) {
+        console.log(response)
+        app.Router.go('/account/')
+      } else {
+        // show server error
+        app.showError(response.message)
+      }
+    } else {
+      app.showError(errors.join('. '))
+    }
   },
 }

@@ -21,7 +21,7 @@ export const API = {
     return await API.send('account/register/', { name, email, password })
   },
   login: async (email, password) => {
-    return await API.send('account/login/', { email, password })
+    return await API.send('account/authenticate/', { email, password })
   },
   send: async (serviceName, data) => {
     try {
@@ -36,7 +36,7 @@ export const API = {
       return result
     } catch (e) {
       console.error(e)
-      // app.showError()
+      app.showError(e)
     }
   },
   fetch: async (serviceName, args) => {
@@ -49,7 +49,7 @@ export const API = {
       return result
     } catch (e) {
       console.error(e)
-      // app.showError()
+      app.showError(e)
     }
   },
 }

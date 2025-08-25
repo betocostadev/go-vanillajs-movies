@@ -1,4 +1,5 @@
 # Build a Fullstack App in Vanilla JS & Go Course
+
 This is a companion repository for the [Build a Fullstack App in Vanilla JS & Go](https://frontendmasters.com/courses/vanilla-js-go/) course on Frontend Masters.
 [![Frontend Masters](https://static.frontendmasters.com/assets/brand/logos/full.png)](https://frontendmasters.com/courses/vanilla-js-go/)
 
@@ -17,10 +18,10 @@ go get github.com/joho/godotenv
 go get github.com/lib/pq
 ```
 
-Create the *main.go* file.
+Create the _main.go_ file.
 
 ```go
-package main 
+package main
 
 func main() {
     // Serve static files
@@ -34,11 +35,11 @@ func main() {
 }
 ```
 
-Create a test *index.html*.
+Create a test _index.html_.
 
 ### A2 - Logger
 
-Create a logger package with a *logger.go* file
+Create a logger package with a _logger.go_ file
 
 ```go
 package logger
@@ -84,7 +85,7 @@ func (l *Logger) Close() {
 }
 ```
 
-Now, change *main.go* with:
+Now, change _main.go_ with:
 
 ```go
 func main() {
@@ -114,57 +115,60 @@ func initializeLogger() *logger.Logger {
 
 ### A3 - Models
 
-Create the *models* package with the following files:
+Create the _models_ package with the following files:
 
-*genre.go*
+_genre.go_
+
 ```go
 package models
 
 type Genre struct {
-	ID   int   
-	Name string 
+	ID   int
+	Name string
 }
 ```
 
-*actor.go*
+_actor.go_
+
 ```go
 package models
 
 type Actor struct {
-	ID        int     
-	FirstName string  
-	LastName  string  
-	ImageURL  *string 
+	ID        int
+	FirstName string
+	LastName  string
+	ImageURL  *string
 }
 
 ```
 
-*movie.go*
+_movie.go_
+
 ```go
 package models
 
 type Movie struct {
-	ID          int      
-	TMDB_ID     int      
-	Title       string   
-	Tagline     *string  
-	ReleaseYear int      
-	Genres      []Genre  
-	Overview    *string  
-	Score       *float32 
-	Popularity  *float32 
-	Keywords    []string 
-	Language    *string  
-	PosterURL   *string  
-	TrailerURL  *string  
-	Casting     []Actor  
+	ID          int
+	TMDB_ID     int
+	Title       string
+	Tagline     *string
+	ReleaseYear int
+	Genres      []Genre
+	Overview    *string
+	Score       *float32
+	Popularity  *float32
+	Keywords    []string
+	Language    *string
+	PosterURL   *string
+	TrailerURL  *string
+	Casting     []Actor
 }
 
 ```
 
 ### A4 - Basic Handlers
 
-Create the *handlers* package with a *movies_handlers.go* file.
+Create the _handlers_ package with a _movies_handlers.go_ file.
 
 ```go
 package handlers
@@ -230,7 +234,7 @@ func (h *MovieHandler) GetTopMovies(w http.ResponseWriter, r *http.Request) {
 
 ```
 
-Now setup the handler in *main.go*
+Now setup the handler in _main.go_
 
 ```go
     // ...
@@ -248,7 +252,8 @@ Check instructions at [https://github.com/air-verse/air](https://github.com/air-
 go install github.com/cosmtrek/air@latest
 ```
 
-To customize it, create a *.air.toml* file. On Linux and macOS, you can use
+To customize it, create a _.air.toml_ file. On Linux and macOS, you can use
+
 ```toml
 # .air.toml
 root = "."
@@ -293,13 +298,13 @@ clean_on_exit = true
 
 ### B1 - Import Data
 
-Set up a Postgres database and get a connection string, then, go to *import/install.go* and insert the string there.
+Set up a Postgres database and get a connection string, then, go to _import/install.go_ and insert the string there.
 
-Get into the *import* folder, and run `go run install.go`. That should populate your database with all the data.
+Get into the _import_ folder, and run `go run install.go`. That should populate your database with all the data.
 
 ### B2 - Create the data interface
 
-Create the *data* package and the *interfaces.go* file
+Create the _data_ package and the _interfaces.go_ file
 
 ```go
 package data
@@ -317,13 +322,13 @@ type MovieStorage interface {
 
 ### B3 - Create the DB connection
 
-Create a *.env* file in the root folder and add the connection string
+Create a _.env_ file in the root folder and add the connection string
 
 ```
 DATABASE_URL=""
 ```
 
-Open *main.go* and add this in the *main* function
+Open _main.go_ and add this in the _main_ function
 
 ```go
     // Load .env file
@@ -348,7 +353,7 @@ Open *main.go* and add this in the *main* function
 
 ### B4 - Add field metadata to models
 
-Modify the models to add metadata such as with *models/movie.go*
+Modify the models to add metadata such as with _models/movie.go_
 
 ```go
 package models
@@ -373,7 +378,7 @@ type Movie struct {
 
 ### B5 - Create the Movie Repository
 
-Create *data/movie_repository.go
+Create \*data/movie_repository.go
 
 ```go
 package data
@@ -405,7 +410,7 @@ const defaultLimit = 20
 func (r *MovieRepository) GetTopMovies() ([]models.Movie, error) {
 	// Fetch movies
 	query := `
-		SELECT id, tmdb_id, title, tagline, release_year, overview, score, 
+		SELECT id, tmdb_id, title, tagline, release_year, overview, score,
 		       popularity, language, poster_url, trailer_url
 		FROM movies
 		ORDER BY popularity DESC
@@ -445,7 +450,7 @@ var (
 )
 ```
 
-Back in *main.go*, initialize the repository after the database creation
+Back in _main.go_, initialize the repository after the database creation
 
 ```go
 	// Initialize repositories
@@ -477,15 +482,15 @@ func (h *MovieHandler) handleStorageError(w http.ResponseWriter, err error, cont
 }
 ```
 
-Update handler instance in *main.go* to use the new structure:
+Update handler instance in _main.go_ to use the new structure:
 
 ```go
-movieHandler := handlers.NewMovieHandler(movieRepo, logInstance)	
+movieHandler := handlers.NewMovieHandler(movieRepo, logInstance)
 ```
 
 ### B6 - Finish the Movie Repository
 
-The final *movie_repository.go* should look like
+The final _movie_repository.go_ should look like
 
 ```go
 package data
@@ -517,7 +522,7 @@ const defaultLimit = 20
 func (r *MovieRepository) GetTopMovies() ([]models.Movie, error) {
 	// Fetch movies
 	query := `
-		SELECT id, tmdb_id, title, tagline, release_year, overview, score, 
+		SELECT id, tmdb_id, title, tagline, release_year, overview, score,
 		       popularity, language, poster_url, trailer_url
 		FROM movies
 		ORDER BY popularity DESC
@@ -529,7 +534,7 @@ func (r *MovieRepository) GetTopMovies() ([]models.Movie, error) {
 func (r *MovieRepository) GetRandomMovies() ([]models.Movie, error) {
 	// Fetch movies
 	randomQuery := `
-		SELECT id, tmdb_id, title, tagline, release_year, overview, score, 
+		SELECT id, tmdb_id, title, tagline, release_year, overview, score,
 		       popularity, language, poster_url, trailer_url
 		FROM movies
 		ORDER BY random()
@@ -566,7 +571,7 @@ func (r *MovieRepository) getMovies(query string) ([]models.Movie, error) {
 func (r *MovieRepository) GetMovieByID(id int) (models.Movie, error) {
 	// Fetch movie
 	query := `
-		SELECT id, tmdb_id, title, tagline, release_year, overview, score, 
+		SELECT id, tmdb_id, title, tagline, release_year, overview, score,
 		       popularity, language, poster_url, trailer_url
 		FROM movies
 		WHERE id = $1
@@ -609,14 +614,14 @@ func (r *MovieRepository) SearchMoviesByName(name string, order string, genre *i
 
 	genreFilter := ""
 	if genre != nil {
-		genreFilter = ` AND ((SELECT COUNT(*) FROM movie_genres 
-								WHERE movie_id=movies.id 
+		genreFilter = ` AND ((SELECT COUNT(*) FROM movie_genres
+								WHERE movie_id=movies.id
 								AND genre_id=` + strconv.Itoa(*genre) + `) = 1) `
 	}
 
 	// Fetch movies by name
 	query := `
-		SELECT id, tmdb_id, title, tagline, release_year, overview, score, 
+		SELECT id, tmdb_id, title, tagline, release_year, overview, score,
 		       popularity, language, poster_url, trailer_url
 		FROM movies
 		WHERE (title ILIKE $1 OR overview ILIKE $1) ` + genreFilter + `
@@ -672,7 +677,7 @@ func (r *MovieRepository) GetAllGenres() ([]models.Genre, error) {
 func (r *MovieRepository) fetchMovieRelations(m *models.Movie) error {
 	// Fetch genres
 	genreQuery := `
-		SELECT g.id, g.name 
+		SELECT g.id, g.name
 		FROM genres g
 		JOIN movie_genres mg ON g.id = mg.genre_id
 		WHERE mg.movie_id = $1
@@ -747,7 +752,7 @@ var (
 
 ### B7 - Finish the handlers
 
-The final *movies_handler.go* file should look like
+The final _movies_handler.go_ file should look like
 
 ```go
 package handlers
@@ -885,7 +890,7 @@ func NewMovieHandler(storage data.MovieStorage, log *logger.Logger) *MovieHandle
 
 ### B7 - Update the handlers
 
-In *main.go* all the handlers for the API should look like:
+In _main.go_ all the handlers for the API should look like:
 
 ```go
 	// Initialize handlers
@@ -911,51 +916,54 @@ Create `public.html`
 ```html
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ReelingIt - Movies</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="/styles.css">
-    <meta name="theme-color" content="#56bce8">
-    <link rel="manifest" href="app.webmanifest">
-    <link rel="icon" href="/images/icon.png" type="image/png">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <meta name="theme-color" content="#56bce8" />
+    <link rel="manifest" href="app.webmanifest" />
+    <link rel="icon" href="/images/icon.png" type="image/png" />
     <script src="/app.js" type="module" defer></script>
-    <base href="/">
-</head>
+    <base href="/" />
+  </head>
 
-<body>
+  <body>
     <header>
-        <h1>
-            <a href="/" class="navlink"><img src="/images/logo.png" height="35" alt="ReelingIt"></a>
-        </h1>
-        <nav>
-            <ul>
-                <li><a href="/" class="navlink">Movies</a></li>
-                <li><a href="/account/favorites" class="navlink">Favorites</a></li>
-                <li><a href="/account/watchlist" class="navlink">Watchlist</a></li>
-                <li><a href="/account/" class="navlink">My Account</a></li>
-            </ul>
-        </nav>
-        <div>
-            <form onsubmit="app.search(event)">
-                <input type="search" placeholder="Search movies">
-            </form>
-        </div>
+      <h1>
+        <a href="/" class="navlink"
+          ><img src="/images/logo.png" height="35" alt="ReelingIt"
+        /></a>
+      </h1>
+      <nav>
+        <ul>
+          <li><a href="/" class="navlink">Movies</a></li>
+          <li><a href="/account/favorites" class="navlink">Favorites</a></li>
+          <li><a href="/account/watchlist" class="navlink">Watchlist</a></li>
+          <li><a href="/account/" class="navlink">My Account</a></li>
+        </ul>
+      </nav>
+      <div>
+        <form onsubmit="app.search(event)">
+          <input type="search" placeholder="Search movies" />
+        </form>
+      </div>
     </header>
 
-    <main>
-    </main>
+    <main></main>
 
     <footer>
-        <p>© ReelingIt - FrontendMasters.com</p>
+      <p>© ReelingIt - FrontendMasters.com</p>
     </footer>
-         
-</body>
-
+  </body>
 </html>
 ```
 
@@ -964,118 +972,122 @@ Create `public.html`
 Create `app.js`
 
 ```js
-window.app = { 
-    search: (event) => {
-        event.preventDefault();
-        const keywords = document.querySelector("input[type=search]").value;
-        
-    },    
+window.app = {
+  search: (event) => {
+    event.preventDefault()
+    const keywords = document.querySelector('input[type=search]').value
+  },
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-
-})
+window.addEventListener('DOMContentLoaded', () => {})
 ```
 
 ### C3 - Add a Manifest file
 
-Add the *app.webmanifest* file to the project
+Add the _app.webmanifest_ file to the project
 
 ```json
 {
-    "name": "ReelingIt",
-    "short_name": "ReelingIt",
-    "theme_color": "#43281C",
-    "display": "browser",
-    "background_color": "#56bce8",
-    "description": "The ultimate app for movie lovers: discover trailers, reviews, showtimes, and more. Experience cinema like never before!",    "icons": [
-        {
-            "src": "images/icon.png",
-            "sizes": "1024x1024",
-            "type": "image/png"
-        }
-    ]
+  "name": "ReelingIt",
+  "short_name": "ReelingIt",
+  "theme_color": "#43281C",
+  "display": "browser",
+  "background_color": "#56bce8",
+  "description": "The ultimate app for movie lovers: discover trailers, reviews, showtimes, and more. Experience cinema like never before!",
+  "icons": [
+    {
+      "src": "images/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
 }
 ```
 
 ### C4 - Create the API Service
 
-Create *services/API.js* file:
+Create _services/API.js_ file:
 
 ```js
 export const API = {
-    baseURL: '/api/',
-    getTopMovies: async () => {
-        return await API.fetch("movies/top");
-    },
-    getRandomMovies: async () => {
-        return await API.fetch("movies/random");
-    },
-    getMovieById: async (id) => {
-        return await API.fetch(`/movies/${id}`);
-    },
-    searchMovies: async (q, order, genre) => {
-        return await API.fetch(`/movies/search`, {q, order, genre})
-    },
-    getGenres: async () => {
-        return await API.fetch("genres");
-    },
-    fetch: async (service, args) => {
-        try {
-            const queryString = args ? new URLSearchParams(args).toString() : "";
-            const response = await fetch(API.baseURL + service + '?' + queryString);
-            const result = await response.json();
-            return result;
-        } catch (e) {
-            console.error(e);
-            app.showError();
-        }
+  baseURL: '/api/',
+  getTopMovies: async () => {
+    return await API.fetch('movies/top')
+  },
+  getRandomMovies: async () => {
+    return await API.fetch('movies/random')
+  },
+  getMovieById: async (id) => {
+    return await API.fetch(`/movies/${id}`)
+  },
+  searchMovies: async (q, order, genre) => {
+    return await API.fetch(`/movies/search`, { q, order, genre })
+  },
+  getGenres: async () => {
+    return await API.fetch('genres')
+  },
+  fetch: async (service, args) => {
+    try {
+      const queryString = args ? new URLSearchParams(args).toString() : ''
+      const response = await fetch(API.baseURL + service + '?' + queryString)
+      const result = await response.json()
+      return result
+    } catch (e) {
+      console.error(e)
+      app.showError()
     }
+  },
 }
 
-export default API;
+export default API
 ```
 
 ## D-Web Components
 
 ### D1 - HomePage template
 
-Create a template in the *index.html*
+Create a template in the _index.html_
 
 ```html
 <template id="template-home">
-    <section class="vertical-scroll" id="top-10">
-        <h2>This Week's Top 10</h2>
-        <ul>
-            <animated-loading data-elements="5"
-                data-width="150px" data-height="220px">
-            </animated-loading> 
-        </ul>
-    </section>
-    <section class="vertical-scroll" id="random">
-        <h2>Something to watch today</h2>
-        <ul>
-            <animated-loading data-elements="5"
-                data-width="150px" data-height="220px">
-            </animated-loading> 
-        </ul>
-    </section>
+  <section class="vertical-scroll" id="top-10">
+    <h2>This Week's Top 10</h2>
+    <ul>
+      <animated-loading
+        data-elements="5"
+        data-width="150px"
+        data-height="220px"
+      >
+      </animated-loading>
+    </ul>
+  </section>
+  <section class="vertical-scroll" id="random">
+    <h2>Something to watch today</h2>
+    <ul>
+      <animated-loading
+        data-elements="5"
+        data-width="150px"
+        data-height="220px"
+      >
+      </animated-loading>
+    </ul>
+  </section>
 </template>
 ```
 
 ### D2 - MovieItem Component
 
-Create the *components* folder and *MovieItem.js* file
+Create the _components_ folder and _MovieItem.js_ file
 
 ```js
 export class MovieItemComponent extends HTMLElement {
-    constructor(movie) {
-        super();
-        this.movie = movie;
-    }
+  constructor(movie) {
+    super()
+    this.movie = movie
+  }
 
-    connectedCallback() {
-        this.innerHTML = `
+  connectedCallback() {
+    this.innerHTML = `
                 <a href="#">
                     <article>
                         <img src="${this.movie.poster_url}" alt="${this.movie.title} Poster">
@@ -1083,311 +1095,306 @@ export class MovieItemComponent extends HTMLElement {
                     </article>
                 </a>
             `
-    }
+  }
 }
 
-customElements.define("movie-item", MovieItemComponent);
+customElements.define('movie-item', MovieItemComponent)
 ```
 
 ### D3 - HomePage Component
 
-Create components/*HomePage.js*
+Create components/_HomePage.js_
 
 ```js
-import API from "../services/API.js";
-import { MovieItemComponent } from "./MovieItem.js";
+import API from '../services/API.js'
+import { MovieItemComponent } from './MovieItem.js'
 
 export default class HomePage extends HTMLElement {
+  async render() {
+    const topMovies = await API.getTopMovies()
+    renderMoviesInList(topMovies, this.querySelector('#top-10 ul'))
 
-    async render() {
-        const topMovies = await API.getTopMovies();
-        renderMoviesInList(topMovies, this.querySelector("#top-10 ul"));
+    const randomMovies = await API.getRandomMovies()
+    renderMoviesInList(randomMovies, this.querySelector('#random ul'))
 
-        const randomMovies = await API.getRandomMovies();
-        renderMoviesInList(randomMovies, this.querySelector("#random ul"));
-
-        function renderMoviesInList(movies, ul) {
-            ul.innerHTML = "";
-            movies.forEach(movie => {
-                const li = document.createElement("li");
-                li.appendChild(new MovieItemComponent(movie));
-                ul.appendChild(li);
-            });    
-        }
+    function renderMoviesInList(movies, ul) {
+      ul.innerHTML = ''
+      movies.forEach((movie) => {
+        const li = document.createElement('li')
+        li.appendChild(new MovieItemComponent(movie))
+        ul.appendChild(li)
+      })
     }
+  }
 
-    connectedCallback() {
-        const template = document.getElementById("template-home");
-        const content = template.content.cloneNode(true);
-        this.appendChild(content);  
+  connectedCallback() {
+    const template = document.getElementById('template-home')
+    const content = template.content.cloneNode(true)
+    this.appendChild(content)
 
-        this.render();
-    }
+    this.render()
+  }
 }
-customElements.define("home-page", HomePage);
+customElements.define('home-page', HomePage)
 ```
 
 ### D4 - Animated Loading
 
-Create the *components/AnimatedLoading.js* file:
+Create the _components/AnimatedLoading.js_ file:
 
 ```js
 class AnimatedLoading extends HTMLElement {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super()
+  }
 
-    connectedCallback() {
-        let qty = this.dataset.elements ?? 1;
-        let width = this.dataset.width ?? "100px";
-        let height = this.dataset.height ?? "10px";
-        for (let i=0; i<qty; i++) {
-            const wrapper = document.createElement('div');
-            wrapper.setAttribute('class', 'loading-wave');    
-            wrapper.style.width = width;
-            wrapper.style.height = height;        
-            wrapper.style.margin = "10px";
-            wrapper.style.display = "inline-block";
-            this.appendChild(wrapper);
-        }
+  connectedCallback() {
+    let qty = this.dataset.elements ?? 1
+    let width = this.dataset.width ?? '100px'
+    let height = this.dataset.height ?? '10px'
+    for (let i = 0; i < qty; i++) {
+      const wrapper = document.createElement('div')
+      wrapper.setAttribute('class', 'loading-wave')
+      wrapper.style.width = width
+      wrapper.style.height = height
+      wrapper.style.margin = '10px'
+      wrapper.style.display = 'inline-block'
+      this.appendChild(wrapper)
     }
+  }
 }
 
-customElements.define('animated-loading', AnimatedLoading);
+customElements.define('animated-loading', AnimatedLoading)
 ```
 
 ### D5 - Movie Details
 
-Add a new template to *index.html*
+Add a new template to _index.html_
 
 ```html
-    <template id="template-movie-details">
-        <article id="movie">
-            <h2><animated-loading elements="2"></animated-loading></h2>
-            <h3></h3>
-            <header>
-                <img src="" alt="Poster">
-                <youtube-embed id="trailer" data-url=""></youtube-embed>
-                <section id="actions">
-                    <dl id="metadata">
-                    </dl>
-                    <button>Add to Favorites</button>
-                    <button>Add to Watchlist</button>    
-                </section>
-            </header>
-            <ul id="genres"></ul>
-            <p id="overview"></p>
-            <ul id="cast"></ul>
-        </article>
-    </template>
+<template id="template-movie-details">
+  <article id="movie">
+    <h2><animated-loading elements="2"></animated-loading></h2>
+    <h3></h3>
+    <header>
+      <img src="" alt="Poster" />
+      <youtube-embed id="trailer" data-url=""></youtube-embed>
+      <section id="actions">
+        <dl id="metadata"></dl>
+        <button>Add to Favorites</button>
+        <button>Add to Watchlist</button>
+      </section>
+    </header>
+    <ul id="genres"></ul>
+    <p id="overview"></p>
+    <ul id="cast"></ul>
+  </article>
+</template>
 ```
 
-Create the *components/MovieDetailsPage.js* file:
+Create the _components/MovieDetailsPage.js_ file:
 
 ```js
-import API from "../services/API.js";
+import API from '../services/API.js'
 
 export default class MovieDetailsPage extends HTMLElement {
-    
-    movie = null;
+  movie = null
 
-    async render(id) {
-        try {
-            this.movie = await API.getMovieById(id);
-        } catch (e) {
-            app.showError();
-            return;
-        }
-        const template = document.getElementById("template-movie-details");
-        const content = template.content.cloneNode(true);
-        this.appendChild(content);  
+  async render(id) {
+    try {
+      this.movie = await API.getMovieById(id)
+    } catch (e) {
+      app.showError()
+      return
+    }
+    const template = document.getElementById('template-movie-details')
+    const content = template.content.cloneNode(true)
+    this.appendChild(content)
 
-        this.querySelector("h2").textContent = this.movie.title;
-        this.querySelector("h3").textContent = this.movie.tagline;
-        this.querySelector("img").src = this.movie.poster_url;
-        this.querySelector("#trailer").dataset.url = this.movie.trailer_url;
-        this.querySelector("#overview").textContent = this.movie.overview;
-        this.querySelector("#metadata").innerHTML = `                        
+    this.querySelector('h2').textContent = this.movie.title
+    this.querySelector('h3').textContent = this.movie.tagline
+    this.querySelector('img').src = this.movie.poster_url
+    this.querySelector('#trailer').dataset.url = this.movie.trailer_url
+    this.querySelector('#overview').textContent = this.movie.overview
+    this.querySelector('#metadata').innerHTML = `                        
             <dt>Release Date</dt>
             <dd>${this.movie.release_year}</dd>                        
             <dt>Score</dt>
             <dd>${this.movie.score} / 10</dd>                        
             <dt>Original languae</dt>
             <dd>${this.movie.language}</dd>                        
-        `;
+        `
 
-        const ulGenres = this.querySelector("#genres");
-        ulGenres.innerHTML = "";
-        this.movie.genres.forEach(genre => {
-            const li = document.createElement("li");
-            li.textContent = genre.name;
-            ulGenres.appendChild(li);
-        });
+    const ulGenres = this.querySelector('#genres')
+    ulGenres.innerHTML = ''
+    this.movie.genres.forEach((genre) => {
+      const li = document.createElement('li')
+      li.textContent = genre.name
+      ulGenres.appendChild(li)
+    })
 
-        const ulCast = this.querySelector("#cast");
-        ulCast.innerHTML = "";
-        this.movie.casting.forEach(actor => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <img src="${actor.image_url ?? '/images/generic_actor.jpg'}" alt="Picture of ${actor.last_name}">
+    const ulCast = this.querySelector('#cast')
+    ulCast.innerHTML = ''
+    this.movie.casting.forEach((actor) => {
+      const li = document.createElement('li')
+      li.innerHTML = `
+                <img src="${
+                  actor.image_url ?? '/images/generic_actor.jpg'
+                }" alt="Picture of ${actor.last_name}">
                 <p>${actor.first_name} ${actor.last_name}</p>
-            `;
-            ulCast.appendChild(li);
-        });
-    }
+            `
+      ulCast.appendChild(li)
+    })
+  }
 
-    connectedCallback() {
-        const id = this.params[0];
+  connectedCallback() {
+    const id = this.params[0]
 
-        this.render(id);
-
-    }
+    this.render(id)
+  }
 }
-customElements.define("movie-details-page", MovieDetailsPage);
+customElements.define('movie-details-page', MovieDetailsPage)
 ```
 
 ### D6 - YouTube Embed Component
 
-Create the *components/YouTubeEmbed.js* file:
+Create the _components/YouTubeEmbed.js_ file:
 
 ```js
 export class YouTubeEmbed extends HTMLElement {
-    
-    static get observedAttributes() {
-        return ['data-url'];
-    }
+  static get observedAttributes() {
+    return ['data-url']
+  }
 
-    attributeChangedCallback(prop, value) {
-        if (prop === 'data-url') {
-            const url = this.dataset.url;
-            const videoId = url.substring(url.indexOf("?v")+3);
-            console.log(videoId);
+  attributeChangedCallback(prop, value) {
+    if (prop === 'data-url') {
+      const url = this.dataset.url
+      const videoId = url.substring(url.indexOf('?v') + 3)
+      console.log(videoId)
 
-            this.innerHTML = `
+      this.innerHTML = `
                 <iframe width="100%" height="300" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            `;
-        }
+            `
     }
-
+  }
 }
 
-customElements.define("youtube-embed", YouTubeEmbed);
+customElements.define('youtube-embed', YouTubeEmbed)
 ```
 
 ## E-Client Side Routing
 
 ### E1 - Routes
 
-Let's create our routes for the client in */services/Routes.js* and boilerplate code for all the Web Components.
+Let's create our routes for the client in _/services/Routes.js_ and boilerplate code for all the Web Components.
 
 ```js
 export const routes = [
-    {
-        path: "/",
-        component: HomePage
-    },
-    {
-        path: "/movies",
-        component: MoviesPage
-    },
-    {
-        path: /\/movies\/(\d+)/,
-        component: MovieDetailsPage
-    },
-    {
-        path: "/account/register",
-        component: RegisterPage
-    },
-    {
-        path: "/account/login",
-        component: LoginPage
-    },     
-    {
-        path: "/account/",
-        component: AccountPage
-    },
-    {
-        path: "/account/favorites",
-        component: FavoritesPage
-    },	
-{
-        path: "/account/watchlist",
-        component: WatchlistPage
-    },	
+  {
+    path: '/',
+    component: HomePage,
+  },
+  {
+    path: '/movies',
+    component: MoviesPage,
+  },
+  {
+    path: /\/movies\/(\d+)/,
+    component: MovieDetailsPage,
+  },
+  {
+    path: '/account/register',
+    component: RegisterPage,
+  },
+  {
+    path: '/account/login',
+    component: LoginPage,
+  },
+  {
+    path: '/account/',
+    component: AccountPage,
+  },
+  {
+    path: '/account/favorites',
+    component: FavoritesPage,
+  },
+  {
+    path: '/account/watchlist',
+    component: WatchlistPage,
+  },
 ]
 ```
 
 ### E2 - The Router
 
-Now let's make the router in *services/Router.js*
+Now let's make the router in _services/Router.js_
 
 ```js
-import { routes } from "./Routes.js";
+import { routes } from './Routes.js'
 
 const Router = {
-    init: () => {
-        document.querySelectorAll("a.navlink").forEach(a => {
-            a.addEventListener("click", event => {
-                event.preventDefault();
-                const href = a.getAttribute("href");
-                Router.go(href);
-            });
-        });  
-        window.addEventListener("popstate", () => {
-            Router.go(location.pathname, false);
-        });      
-        // Process initial URL   
-        Router.go(location.pathname + location.search);
-    },
-    go: (route, addToHistory=true) => {
-        if (addToHistory) {
-            history.pushState(null, "", route);
+  init: () => {
+    document.querySelectorAll('a.navlink').forEach((a) => {
+      a.addEventListener('click', (event) => {
+        event.preventDefault()
+        const href = a.getAttribute('href')
+        Router.go(href)
+      })
+    })
+    window.addEventListener('popstate', () => {
+      Router.go(location.pathname, false)
+    })
+    // Process initial URL
+    Router.go(location.pathname + location.search)
+  },
+  go: (route, addToHistory = true) => {
+    if (addToHistory) {
+      history.pushState(null, '', route)
+    }
+    const routePath = route.includes('?') ? route.split('?')[0] : route
+    let pageElement = null
+    for (const r of routes) {
+      if (typeof r.path === 'string' && r.path === routePath) {
+        pageElement = new r.component()
+        break
+      } else if (r.path instanceof RegExp) {
+        const match = r.path.exec(route)
+        if (match) {
+          const params = match.slice(1)
+          pageElement = new r.component()
+          pageElement.params = params
+          break
         }
-        const routePath = route.includes('?') ? route.split('?')[0] : route;
-        let pageElement = null;
-        for (const r of routes) {
-            if (typeof r.path === "string" && r.path === routePath) {
-                pageElement = new r.component();
-                break;
-            } else if (r.path instanceof RegExp) {
-                const match = r.path.exec(route);
-                if (match) {
-                    const params = match.slice(1);
-                    pageElement = new r.component();
-                    pageElement.params = params;                    
-                    break;
-                }
-            }
-        }
-        if (pageElement==null) {
-            pageElement = document.createElement("h1");
-            pageElement.textContent = "Page not found";
-        }       
-
-		document.querySelector("main").innerHTML = "";
-		document.querySelector("main").appendChild(pageElement); 
+      }
+    }
+    if (pageElement == null) {
+      pageElement = document.createElement('h1')
+      pageElement.textContent = 'Page not found'
     }
 
+    document.querySelector('main').innerHTML = ''
+    document.querySelector('main').appendChild(pageElement)
+  },
 }
 
-export default Router;
+export default Router
 ```
 
 Now let's add the Router to app in `app.js` and call init to enhance our links
 
 ```js
-window.app = { 
-    API,
-    Router,
+window.app = {
+  API,
+  Router,
 }
-window.addEventListener("DOMContentLoaded", () => {
-    app.Router.init();
+window.addEventListener('DOMContentLoaded', () => {
+  app.Router.init()
 })
 ```
 
 ### E3 - Server-side dynamic routes
 
-When we refresh the page on dynamic routes, we get a 404, to solve the problem, let's add some new Handlers in our backend, adding them before the file serving at *main.go*:
+When we refresh the page on dynamic routes, we get a 404, to solve the problem, let's add some new Handlers in our backend, adding them before the file serving at _main.go_:
 
 ```go
 	// Handler catch-all
@@ -1398,54 +1405,58 @@ When we refresh the page on dynamic routes, we get a 404, to solve the problem, 
 	http.HandleFunc("/movies/", catchAllHandler)
 	http.HandleFunc("/account/", catchAllHandler)
 ```
+
 ### E4 - Animating the transition
 
-At *Router.js* we can remove the last two code lines with this:
+At _Router.js_ we can remove the last two code lines with this:
 
 ```js
-	function updatePage() {
-		document.querySelector("main").innerHTML = "";
-		document.querySelector("main").appendChild(pageElement); 
-	}
+function updatePage() {
+  document.querySelector('main').innerHTML = ''
+  document.querySelector('main').appendChild(pageElement)
+}
 
-	if (!document.startViewTransition) {
-		updatePage();
-	} else {
-		const oldPage = document.querySelector("main").firstElementChild;
-		if (oldPage) oldPage.style.viewTransitionName = "old";
-		pageElement.style.viewTransitionName = "new";
-		document.startViewTransition( () => updatePage() );
-	}
+if (!document.startViewTransition) {
+  updatePage()
+} else {
+  const oldPage = document.querySelector('main').firstElementChild
+  if (oldPage) oldPage.style.viewTransitionName = 'old'
+  pageElement.style.viewTransitionName = 'new'
+  document.startViewTransition(() => updatePage())
+}
 ```
 
 ### E5 - Error Messages
 
-Add in *index.html*
+Add in _index.html_
 
 ```html
- <!-- Alert Modal -->
+<!-- Alert Modal -->
 <dialog id="alert-modal">
-	<h3>Error</h3>
-	<p>There was an error loading the page</p>
-	<button class="action-btn" onclick="app.closeError()">OK</button>
+  <h3>Error</h3>
+  <p>There was an error loading the page</p>
+  <button class="action-btn" onclick="app.closeError()">OK</button>
 </dialog>
 ```
 
-Then, in *app.js*
+Then, in _app.js_
 
 ```js
-window.app = { 
-	// ...
-    showError: (message = 'There was an error loading the page', goToHome=true) => {
-        document.querySelector("#alert-modal").showModal()
-		document.querySelector("#alert-modal p").textContents = message;
-        if (goToHome) app.Router.go("/");
-        return;
-    },
-    closeError: () => {
-        document.getElementById('alert-modal').close()        
-    },
-	// ...
+window.app = {
+  // ...
+  showError: (
+    message = 'There was an error loading the page',
+    goToHome = true
+  ) => {
+    document.querySelector('#alert-modal').showModal()
+    document.querySelector('#alert-modal p').textContents = message
+    if (goToHome) app.Router.go('/')
+    return
+  },
+  closeError: () => {
+    document.getElementById('alert-modal').close()
+  },
+  // ...
 }
 ```
 
@@ -1453,88 +1464,88 @@ window.app = {
 
 ### F1 - The MoviesPage
 
-Add the template in *index.html*
+Add the template in _index.html_
 
 ```html
 <template id="template-movies">
-        <section>
-            <div id="search-header">
-                <h2></h2>
-                <section id="filters">
-                    <select id="filter" onchange="app.searchFilterChange(this.value)">
-                        <option>Filter by Genre</option>                        
-                    </select>
-                    <select id="order" onchange="app.searchOrderChange(this.value)">
-                        <option value="popularity">Sort by Popularity</option>
-                        <option value="score">Sort by Score</option>
-                        <option value="date">Sort by Release Date</option>
-                        <option value="name">Sort by Name</option>
-                    </select>
-                </section>
-            </div>
-            <ul id="movies-result">
-                <animated-loading data-elements="5"
-                    data-width="150px" data-height="220px">
-                </animated-loading> 
-            </ul>
-        </section>
-    </template> 
+  <section>
+    <div id="search-header">
+      <h2></h2>
+      <section id="filters">
+        <select id="filter" onchange="app.searchFilterChange(this.value)">
+          <option>Filter by Genre</option>
+        </select>
+        <select id="order" onchange="app.searchOrderChange(this.value)">
+          <option value="popularity">Sort by Popularity</option>
+          <option value="score">Sort by Score</option>
+          <option value="date">Sort by Release Date</option>
+          <option value="name">Sort by Name</option>
+        </select>
+      </section>
+    </div>
+    <ul id="movies-result">
+      <animated-loading
+        data-elements="5"
+        data-width="150px"
+        data-height="220px"
+      >
+      </animated-loading>
+    </ul>
+  </section>
+</template>
 ```
 
-And then for the Web Component *MoviesPage*
+And then for the Web Component _MoviesPage_
 
 ```js
-import API from "../services/API.js";
-import { MovieItemComponent } from "./MovieItem.js";
+import API from '../services/API.js'
+import { MovieItemComponent } from './MovieItem.js'
 
 export default class MoviesPage extends HTMLElement {
-    
-    async render(query) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const order = urlParams.get("order") ?? "";
-        const genre = urlParams.get("genre") ?? "";
+  async render(query) {
+    const urlParams = new URLSearchParams(window.location.search)
+    const order = urlParams.get('order') ?? ''
+    const genre = urlParams.get('genre') ?? ''
 
-        const movies = await API.searchMovies(query, order, genre);
-        
-        const ulMovies = this.querySelector("ul");
-        ulMovies.innerHTML = "";
-        if (movies && movies.length>0) {
-            movies.forEach(movie => {
-                const li = document.createElement("li");
-                li.appendChild(new MovieItemComponent(movie));
-                ulMovies.appendChild(li);
-            });    
-        } else {
-            ulMovies.innerHTML = "<h3>There are no movies with your search</h3>";
-        }        
+    const movies = await API.searchMovies(query, order, genre)
 
-        //await this.loadGenres();
-
-        if (order) this.querySelector("#order").value = order;
-        if (genre) this.querySelector("#filter").value = genre;
-
+    const ulMovies = this.querySelector('ul')
+    ulMovies.innerHTML = ''
+    if (movies && movies.length > 0) {
+      movies.forEach((movie) => {
+        const li = document.createElement('li')
+        li.appendChild(new MovieItemComponent(movie))
+        ulMovies.appendChild(li)
+      })
+    } else {
+      ulMovies.innerHTML = '<h3>There are no movies with your search</h3>'
     }
-    
-   
-    connectedCallback() {
-        const template = document.getElementById("template-movies");
-        const content = template.content.cloneNode(true);
-        this.appendChild(content);  
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('q');
-        if (query) {
-            this.querySelector("h2").textContent = `'${query}' movies`;
-            this.render(query);
-        } else {
-            app.showError();
-        }
+    //await this.loadGenres();
+
+    if (order) this.querySelector('#order').value = order
+    if (genre) this.querySelector('#filter').value = genre
+  }
+
+  connectedCallback() {
+    const template = document.getElementById('template-movies')
+    const content = template.content.cloneNode(true)
+    this.appendChild(content)
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const query = urlParams.get('q')
+    if (query) {
+      this.querySelector('h2').textContent = `'${query}' movies`
+      this.render(query)
+    } else {
+      app.showError()
     }
+  }
 }
-customElements.define("movies-page", MoviesPage);
+customElements.define('movies-page', MoviesPage)
 ```
 
-At *app.js* add the following function to app
+At _app.js_ add the following function to app
 
 ```js
 // ...
@@ -1545,12 +1556,12 @@ At *app.js* add the following function to app
             app.Router.go(`/movies?q=${keywords}`)
         }
     },
-// ...	
+// ...
 ```
 
 ### F2 - Connecting the Filter with Genre
 
-Add in *MoviesComponent.js*
+Add in _MoviesComponent.js_
 
 ```js
  async loadGenres() {
@@ -1568,11 +1579,11 @@ Add in *MoviesComponent.js*
 }
 ```
 
-Call it from *connectedCallback*
+Call it from _connectedCallback_
 
 ### F3 - Adding Support for Order and Filter
 
-In *app.js* add the new functions to the app object:
+In _app.js_ add the new functions to the app object:
 
 ```js
 // ...
@@ -1591,7 +1602,6 @@ In *app.js* add the new functions to the app object:
     }
 ```
 
-
 ## G-Authentication
 
 ### G1 - Adding the new Storage
@@ -1602,8 +1612,7 @@ Let's add a new dependency, executing:
 go get "golang.org/x/crypto/bcrypt"
 ```
 
-
-Let's add a new interface in *data/interfaces.go*
+Let's add a new interface in _data/interfaces.go_
 
 ```go
 type AccountStorage interface {
@@ -1613,7 +1622,8 @@ type AccountStorage interface {
 	SaveCollection(models.User, int, string) (bool, error)
 }
 ```
-And we create a new implementation at *data/account_repository.go*
+
+And we create a new implementation at _data/account_repository.go_
 
 ```go
 package data
@@ -1701,7 +1711,7 @@ func (r *AccountRepository) Authenticate(email string, password string) (bool, e
 	var user models.User
 	query := `
 		SELECT id, name, email, password_hashed
-		FROM users 
+		FROM users
 		WHERE email = $1 AND time_deleted IS NULL
 	`
 	err := r.db.QueryRow(query, email).Scan(
@@ -1728,7 +1738,7 @@ func (r *AccountRepository) Authenticate(email string, password string) (bool, e
 
 	// Update last login time
 	updateQuery := `
-		UPDATE users 
+		UPDATE users
 		SET last_login = $1
 		WHERE id = $2
 	`
@@ -1745,7 +1755,7 @@ func (r *AccountRepository) GetAccountDetails(email string) (models.User, error)
 	var user models.User
 	query := `
 		SELECT id, name, email
-		FROM users 
+		FROM users
 		WHERE email = $1 AND time_deleted IS NULL
 	`
 	err := r.db.QueryRow(query, email).Scan(
@@ -1764,8 +1774,8 @@ func (r *AccountRepository) GetAccountDetails(email string) (models.User, error)
 
 	// Fetch favorites
 	favoritesQuery := `
-		SELECT m.id, m.tmdb_id, m.title, m.tagline, m.release_year, 
-		       m.overview, m.score, m.popularity, m.language, 
+		SELECT m.id, m.tmdb_id, m.title, m.tagline, m.release_year,
+		       m.overview, m.score, m.popularity, m.language,
 		       m.poster_url, m.trailer_url
 		FROM movies m
 		JOIN user_movies um ON m.id = um.movie_id
@@ -1793,8 +1803,8 @@ func (r *AccountRepository) GetAccountDetails(email string) (models.User, error)
 
 	// Fetch watchlist
 	watchlistQuery := `
-		SELECT m.id, m.tmdb_id, m.title, m.tagline, m.release_year, 
-		       m.overview, m.score, m.popularity, m.language, 
+		SELECT m.id, m.tmdb_id, m.title, m.tagline, m.release_year,
+		       m.overview, m.score, m.popularity, m.language,
 		       m.poster_url, m.trailer_url
 		FROM movies m
 		JOIN user_movies um ON m.id = um.movie_id
@@ -1837,8 +1847,8 @@ func (r *AccountRepository) SaveCollection(user models.User, movieID int, collec
 	// Get user ID from email
 	var userID int
 	err := r.db.QueryRow(`
-		SELECT id 
-		FROM users 
+		SELECT id
+		FROM users
 		WHERE email = $1 AND time_deleted IS NULL
 	`, user.Email).Scan(&userID)
 	if err == sql.ErrNoRows {
@@ -1854,10 +1864,10 @@ func (r *AccountRepository) SaveCollection(user models.User, movieID int, collec
 	var exists bool
 	err = r.db.QueryRow(`
 		SELECT EXISTS(
-			SELECT 1 
-			FROM user_movies 
-			WHERE user_id = $1 
-			AND movie_id = $2 
+			SELECT 1
+			FROM user_movies
+			WHERE user_id = $1
+			AND movie_id = $2
 			AND relation_type = $3
 		)
 	`, userID, movieID, collection).Scan(&exists)
@@ -2031,7 +2041,7 @@ func NewAccountHandler(storage data.AccountStorage, log *logger.Logger) *Account
 
 ```
 
-Finally, we register the handlers in *main.go*
+Finally, we register the handlers in _main.go_
 
 ```go
 	accountRepo, err := data.NewAccountRepository(db, logInstance)
@@ -2047,47 +2057,88 @@ Finally, we register the handlers in *main.go*
 
 ```
 
-
 ### G3 - Adding the Forms
 
 Add the new templates and populate the Web Component objects for LoginPage and RegisterPage
 
 ```html
 <template id="template-register">
-        <section>
-            <h2>Register a New Account</h2>
-            <form onsubmit="app.register(event)">
-                <label for="register-name">Name</label>
-                <input type="text" id="register-name" placeholder="Name" required autocomplete="name">
-                <label for="register-email">Email</label>
-                <input type="email" id="register-email" placeholder="Email" required autocomplete="email">
-                <label for="register-password">Password</label>
-                <input type="password" id="register-password" placeholder="Password" required autocomplete="new-password">
-                <label for="register-password-confirm">Confirm Password</label>
-                <input type="password" id="register-password-confirm" placeholder="Confirm Password" required autocomplete="new-password">                 
-                <button>Register</button>
-                <p>If you already have an account, please <a href="/account/login">login</a>.</p>
-            </form>
-        </section>
-    </template>
-    <template id="template-login">
-        <section>
-            <h2>Login into Your Account</h2>
-            <form onsubmit="app.login(event)">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" placeholder="Email" required autocomplete="email">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" placeholder="Password" required autocomplete="current-password">
-                <button>Log In</button>
-                <p>If you don't have an account, please <a href="/account/register">register</a>.</p>
-            </form>
-        </section>
-    </template> 
+  <section>
+    <h2>Register a New Account</h2>
+    <form onsubmit="app.register(event)">
+      <label for="register-name">Name</label>
+      <input
+        type="text"
+        id="register-name"
+        placeholder="Name"
+        required
+        autocomplete="name"
+      />
+      <label for="register-email">Email</label>
+      <input
+        type="email"
+        id="register-email"
+        placeholder="Email"
+        required
+        autocomplete="email"
+      />
+      <label for="register-password">Password</label>
+      <input
+        type="password"
+        id="register-password"
+        placeholder="Password"
+        required
+        autocomplete="new-password"
+      />
+      <label for="register-password-confirm">Confirm Password</label>
+      <input
+        type="password"
+        id="register-password-confirm"
+        placeholder="Confirm Password"
+        required
+        autocomplete="new-password"
+      />
+      <button>Register</button>
+      <p>
+        If you already have an account, please
+        <a href="/account/login">login</a>.
+      </p>
+    </form>
+  </section>
+</template>
+<template id="template-login">
+  <section>
+    <h2>Login into Your Account</h2>
+    <form onsubmit="app.login(event)">
+      <label for="login-email">Email</label>
+      <input
+        type="email"
+        id="login-email"
+        placeholder="Email"
+        required
+        autocomplete="email"
+      />
+      <label for="login-password">Password</label>
+      <input
+        type="password"
+        id="login-password"
+        placeholder="Password"
+        required
+        autocomplete="current-password"
+      />
+      <button>Log In</button>
+      <p>
+        If you don't have an account, please
+        <a href="/account/register">register</a>.
+      </p>
+    </form>
+  </section>
+</template>
 ```
 
 ### G4 - Connecting the API
 
-Add to *API.js*
+Add to _API.js_
 
 ```js
     register: async (name, email, password) => {
@@ -2095,7 +2146,7 @@ Add to *API.js*
     },
     authenticate: async (email, password) => {
         return await API.send("account/authenticate/", {email, password})
-    },   
+    },
     send: async (service, args) => {
         try {
             const response = await fetch(API.baseURL + service, {
@@ -2111,13 +2162,13 @@ Add to *API.js*
             console.error(e);
             app.showError();
         }
-    },   
+    },
 
 ```
 
 ### G5 - Calling the APIs
 
-In *app.js* we will now add:
+In _app.js_ we will now add:
 
 ```js
     register: async (event) => {
@@ -2138,7 +2189,7 @@ In *app.js* we will now add:
                 app.Router.go("/account/")
             } else {
                 app.showError(response.message, false);
-            }        
+            }
         } else {
             app.showError(errors.join(". "), false);
         }
@@ -2148,7 +2199,7 @@ In *app.js* we will now add:
         let errors = [];
         const email = document.getElementById("login-email").value;
         const password = document.getElementById("login-password").value;
- 
+
         if (email.length < 8) errors.push("Enter your complete email");
         if (password.length < 6) errors.push("Enter a password with 6 characters");
         if (errors.length==0) {
@@ -2172,7 +2223,7 @@ To implement JWT, we need to install a package
 go get -u github.com/golang-jwt/jwt/v5
 ```
 
-Then, we create the *token* package and inside two file. Starting with *getsecret.go*
+Then, we create the _token_ package and inside two file. Starting with _getsecret.go_
 
 ```go
 package token
@@ -2194,7 +2245,7 @@ func GetJWTSecret(logger logger.Logger) string {
 }
 ```
 
-Then, *creation.go*
+Then, _creation.go_
 
 ```go
 package token
@@ -2229,7 +2280,7 @@ func CreateJWT(user models.User, logger logger.Logger) string {
 }
 ```
 
-And finally, *validation.go*
+And finally, _validation.go_
 
 ```go
 package token
@@ -2265,7 +2316,7 @@ func ValidateJWT(tokenString string, logger logger.Logger) (*jwt.Token, error) {
 }
 ```
 
-Finally, we add it to our AuthResponse struct in *account_handlers.go* and return it after a successful registration or authentication.
+Finally, we add it to our AuthResponse struct in _account_handlers.go_ and return it after a successful registration or authentication.
 
 ```go
 type AuthResponse struct {
@@ -2295,115 +2346,114 @@ type AuthResponse struct {
 
 ### G7 - Working with the Token Client-Side
 
-We first create a *services/Store.js*
+We first create a _services/Store.js_
 
 ```js
-
 const Store = {
-    jwt: null,
-    get loggedIn() {
-        return this.jwt !== null;
-    }
+  jwt: null,
+  get loggedIn() {
+    return this.jwt !== null
+  },
 }
 
-if (localStorage.getItem("jwt")) {
-    Store.jwt = localStorage.getItem("jwt");
+if (localStorage.getItem('jwt')) {
+  Store.jwt = localStorage.getItem('jwt')
 }
 
 const proxiedStore = new Proxy(Store, {
-    set: (target, prop, value) => {
-        switch (prop) {
-            case "jwt":
-                target[prop] = value;
-                localStorage.setItem("jwt", value)
-                break;
-        }
-        return true;
+  set: (target, prop, value) => {
+    switch (prop) {
+      case 'jwt':
+        target[prop] = value
+        localStorage.setItem('jwt', value)
+        break
     }
-});
+    return true
+  },
+})
 
-
-export default proxiedStore;
+export default proxiedStore
 ```
 
-Then, in *app.js* we save the jwt after a successful login or registration
+Then, in _app.js_ we save the jwt after a successful login or registration
 
 ```js
 // ...
 if (response.success) {
-	app.Store.jwt = response.jwt;
-	app.Router.go("/account/")
+  app.Store.jwt = response.jwt
+  app.Router.go('/account/')
 } else {
-	app.showError(response.message, false);
+  app.showError(response.message, false)
 }
-// ...			
+// ...
 ```
 
 Finally, we update our router, so it can detect and work with URLs needing authentication
 
 ```js
 // ...
-        for (const r of routes) {
-            if (typeof r.path === "string" && r.path === routePath) {
-                pageElement = new r.component();
-                pageElement.loggedIn = r.loggedIn;
-            } else if (r.path instanceof RegExp) {
-                const match = r.path.exec(route);
-                if (match) {
-                    const params = match.slice(1);
-                    pageElement = new r.component();
-                    pageElement.loggedIn = r.loggedIn;
+for (const r of routes) {
+  if (typeof r.path === 'string' && r.path === routePath) {
+    pageElement = new r.component()
+    pageElement.loggedIn = r.loggedIn
+  } else if (r.path instanceof RegExp) {
+    const match = r.path.exec(route)
+    if (match) {
+      const params = match.slice(1)
+      pageElement = new r.component()
+      pageElement.loggedIn = r.loggedIn
 
-                    pageElement.params = params;                    
-                }
-            }
-            if (pageElement) {
-                // A page was found, we checked if we have access to it.
-                if (pageElement.loggedIn && app.Store.loggedIn==false) {
-                    app.Router.go("/account/login");
-                    return;
-                }
-                break;
-            }
-        }
+      pageElement.params = params
+    }
+  }
+  if (pageElement) {
+    // A page was found, we checked if we have access to it.
+    if (pageElement.loggedIn && app.Store.loggedIn == false) {
+      app.Router.go('/account/login')
+      return
+    }
+    break
+  }
+}
 // ...
 ```
 
 ### G8 - Creating the My Account page
 
-We start by adding a template to our *index.html*
+We start by adding a template to our _index.html_
 
 ```html
- <template id="template-account">
-	<section id="account">
-		<h2>You are Logged In</h2>
-		<button onclick="app.logout()">Log out</button>
-		<button onclick="app.Router.go('/account/favorites')">Your Favorites</button>
-		<button onclick="app.Router.go('/account/watchlist')">Your Watchlist</button>
-
-	</section>
-</template>        
+<template id="template-account">
+  <section id="account">
+    <h2>You are Logged In</h2>
+    <button onclick="app.logout()">Log out</button>
+    <button onclick="app.Router.go('/account/favorites')">
+      Your Favorites
+    </button>
+    <button onclick="app.Router.go('/account/watchlist')">
+      Your Watchlist
+    </button>
+  </section>
+</template>
 ```
 
-We create the component *AccountPage.js*
+We create the component _AccountPage.js_
 
 ```js
-import API from "../services/API.js";
-import { MovieItemComponent } from "./MovieItem.js";
+import API from '../services/API.js'
+import { MovieItemComponent } from './MovieItem.js'
 
 export default class AccountPage extends HTMLElement {
-
-
-    connectedCallback() {
-        const template = document.getElementById("template-account");
-        const content = template.content.cloneNode(true);
-        this.appendChild(content);  
-    }
+  connectedCallback() {
+    const template = document.getElementById('template-account')
+    const content = template.content.cloneNode(true)
+    this.appendChild(content)
+  }
 }
-customElements.define("account-page", AccountPage);
+customElements.define('account-page', AccountPage)
 ```
 
-We finally define the route in *Router.js* and implement app.logout in *main.js*
+We finally define the route in _Router.js_ and implement app.logout in _main.js_
 
 ```js
 // ...
@@ -2415,13 +2465,11 @@ We finally define the route in *Router.js* and implement app.logout in *main.js*
 // ...
 ```
 
-
-
 ## H-Favorites and Watchlist
 
 ### H1 - Creating a middleware for authentication check
 
-At *AccountHandlers.go* add the following code:
+At _AccountHandlers.go_ add the following code:
 
 ```go
 func (h *AccountHandler) AuthMiddleware(next http.Handler) http.Handler {
@@ -2475,7 +2523,7 @@ func (h *AccountHandler) AuthMiddleware(next http.Handler) http.Handler {
 
 ### H2 - Adding Web Services
 
-In  *AccountHandlers.go* add the new handlers
+In _AccountHandlers.go_ add the new handlers
 
 ```go
 
@@ -2548,7 +2596,7 @@ func (h *AccountHandler) GetWatchlist(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-Then register them in *main.go*
+Then register them in _main.go_
 
 ```go
 	http.Handle("/api/account/favorites/",
@@ -2563,7 +2611,7 @@ Then register them in *main.go*
 
 ### H3 - Connecting with the Client
 
-We need to change *API.js* to send the token if it's available
+We need to change _API.js_ to send the token if it's available
 
 ```js
     send: async (service, args) => {
@@ -2583,7 +2631,7 @@ We need to change *API.js* to send the token if it's available
         const response = await fetch(API.baseURL + service + '?' + queryString, {
             headers: {
                 "Authorization": app.Store.jwt ? `Bearer ${app.Store.jwt}` : null
-            
+
             }
         });
         const result = await response.json();
@@ -2600,15 +2648,15 @@ Then, on the same file we will add the new services:
         } catch (e) {
             app.Router.go("/account/")
         }
-    },     
+    },
     getWatchlist: async () => {
         try {
             return await API.fetch("account/watchlist");
         } catch (e) {
             app.Router.go("/account/")
         }
-    
-    },     
+
+    },
     saveToCollection: async (movie_id, collection) => {
         return await API.send("account/save-to-collection/", {
             movie_id, collection
@@ -2618,91 +2666,89 @@ Then, on the same file we will add the new services:
 
 ### H4 - Creating the New Pages
 
-Add this template to *index.html*
+Add this template to _index.html_
 
 ```html
-    <template id="template-collection">
-        <section>
-            <ul id="movies-result">
-                <animated-loading data-elements="5"
-                    data-width="150px" data-height="220px">
-                </animated-loading> 
-            </ul>
-        </section>
-    </template>  
+<template id="template-collection">
+  <section>
+    <ul id="movies-result">
+      <animated-loading
+        data-elements="5"
+        data-width="150px"
+        data-height="220px"
+      >
+      </animated-loading>
+    </ul>
+  </section>
+</template>
 ```
-Then, create *CollectionPage.js*
+
+Then, create _CollectionPage.js_
 
 ```js
-import { MovieItemComponent } from "./MovieItem.js";
+import { MovieItemComponent } from './MovieItem.js'
 
 export class CollectionPage extends HTMLElement {
+  constructor(endpoint, title) {
+    super()
+    this.endpoint = endpoint
+    this.title = title
+  }
 
-    constructor(endpoint, title) {
-        super();
-        this.endpoint = endpoint;
-        this.title = title;   
+  async render() {
+    const movies = await this.endpoint()
+    const ulMovies = this.querySelector('ul')
+    ulMovies.innerHTML = ''
+    if (movies && movies.length > 0) {
+      movies.forEach((movie) => {
+        const li = document.createElement('li')
+        li.appendChild(new MovieItemComponent(movie))
+        ulMovies.appendChild(li)
+      })
+    } else {
+      ulMovies.innerHTML = '<h3>There are no movies</h3>'
     }
+  }
 
-    async render() {
-        const movies = await this.endpoint()
-        const ulMovies = this.querySelector("ul");
-        ulMovies.innerHTML = "";
-        if (movies && movies.length>0) {
-            movies.forEach(movie => {
-                const li = document.createElement("li");
-                li.appendChild(new MovieItemComponent(movie));
-                ulMovies.appendChild(li);
-            });    
-        } else {
-            ulMovies.innerHTML = "<h3>There are no movies</h3>";
-        }        
-            ;
-    }
+  connectedCallback() {
+    const template = document.getElementById('template-collection')
+    const content = template.content.cloneNode(true)
+    this.appendChild(content)
 
-    connectedCallback() {
-        const template = document.getElementById("template-collection");
-        const content = template.content.cloneNode(true);
-        this.appendChild(content);  
-
-        this.render();
-    }
+    this.render()
+  }
 }
 ```
 
-And two other components, *FavoritePage.js*
+And two other components, _FavoritePage.js_
 
 ```js
-import API from "../services/API.js";
-import { CollectionPage } from "./CollectionPage.js";
+import API from '../services/API.js'
+import { CollectionPage } from './CollectionPage.js'
 
 export default class FavoritePage extends CollectionPage {
-
-    constructor() {
-        super(API.getFavorites, "Favorite Movies")
-    }
-
+  constructor() {
+    super(API.getFavorites, 'Favorite Movies')
+  }
 }
-customElements.define("favorite-page", FavoritePage);
+customElements.define('favorite-page', FavoritePage)
 ```
 
-And then *WatchlistPage.js*
+And then _WatchlistPage.js_
 
 ```js
-import API from "../services/API.js";
-import { CollectionPage } from "./CollectionPage.js";
+import API from '../services/API.js'
+import { CollectionPage } from './CollectionPage.js'
 
 export default class WatchlistPage extends CollectionPage {
-
-    constructor() {
-        super(API.getWatchlist, "Movie Watchlist")
-    }
-
+  constructor() {
+    super(API.getWatchlist, 'Movie Watchlist')
+  }
 }
-customElements.define("watchlist-page", WatchlistPage);
+customElements.define('watchlist-page', WatchlistPage)
 ```
 
-And finally define the routes in *Routes.js*
+And finally define the routes in _Routes.js_
 
 ```js
 // ...
@@ -2711,53 +2757,52 @@ And finally define the routes in *Routes.js*
         path: "/account/favorites",
         component: FavoritePage,
         loggedIn: true
-    },    
+    },
     {
         path: "/account/watchlist",
         component: WatchlistPage,
         loggedIn: true
-    }, 
+    },
 ```
 
 ### H5 - Adding to Collections
 
-In *app.js* lets add the new two features:
+In _app.js_ lets add the new two features:
 
 ```js
-    saveToCollection: async (movie_id, collection) => {
-        if (app.Store.loggedIn) {
-            try {
-                const response = await API.saveToCollection(movie_id, collection);
-                if (response.success) {
-                    switch(collection) {
-                        case "favorite":
-                            app.Router.go("/account/favorites")
-                        break;
-                        case "watchlist":
-                            app.Router.go("/account/watchlist")
-                    }
-                } else {
-                    app.showError("We couldn't save the movie.")
-                }
-            } catch (e) {
-                console.log(e)
-            }
-        } else {
-            app.Router.go("/account/");
+saveToCollection: async (movie_id, collection) => {
+  if (app.Store.loggedIn) {
+    try {
+      const response = await API.saveToCollection(movie_id, collection)
+      if (response.success) {
+        switch (collection) {
+          case 'favorite':
+            app.Router.go('/account/favorites')
+            break
+          case 'watchlist':
+            app.Router.go('/account/watchlist')
         }
+      } else {
+        app.showError("We couldn't save the movie.")
+      }
+    } catch (e) {
+      console.log(e)
     }
-```	
+  } else {
+    app.Router.go('/account/')
+  }
+}
+```
 
-Back in *MovieDetailsPage.js*, add the following calls
+Back in _MovieDetailsPage.js_, add the following calls
 
 ```js
-        this.querySelector("#btnFavorites").addEventListener("click", () => {
-            app.saveToCollection(this.movie.id, "favorite")
-        })
-        this.querySelector("#btnWatchlist").addEventListener("click", () => {
-            app.saveToCollection(this.movie.id, "watchlist")
-        })
-
+this.querySelector('#btnFavorites').addEventListener('click', () => {
+  app.saveToCollection(this.movie.id, 'favorite')
+})
+this.querySelector('#btnWatchlist').addEventListener('click', () => {
+  app.saveToCollection(this.movie.id, 'watchlist')
+})
 ```
 
 # Intermediate Course
@@ -2787,7 +2832,7 @@ CREATE TABLE "public"."passkeys" (
 );
 ```
 
-Then let's create a new model as *passkeyuser.go*
+Then let's create a new model as _passkeyuser.go_
 
 ```go
 package models
@@ -2842,7 +2887,7 @@ func (u *PasskeyUser) UpdateCredential(credential *webauthn.Credential) {
 
 ### I3 - Create the Passkey Repository
 
-Let's update our *interfaces.go*
+Let's update our _interfaces.go_
 
 ```go
 type PasskeyStore interface {
@@ -2856,7 +2901,7 @@ type PasskeyStore interface {
 }
 ```
 
-Now let's create the *data/passkey_repository.go*
+Now let's create the _data/passkey_repository.go_
 
 ```go
 package data
@@ -3086,7 +3131,7 @@ func deserializeCredential(data string) (webauthn.Credential, error) {
 
 ### I4 - Create the Passkey handlers
 
-Create *handlers/passkey_handler.go*
+Create _handlers/passkey_handler.go_
 
 ```go
 package handlers
@@ -3397,140 +3442,176 @@ Update `main.go` to support our new handlers
 In our HTML add the SimpleWebAuthn library script before app.js loading:
 
 ```html
-    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js" defer></script>
+<script
+  src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"
+  defer
+></script>
 ```
 
 ### I7 - Update the UI
 
-Change in *index.html* the template-account 
+Change in _index.html_ the template-account
 
 ```html
- <template id="template-account">
-        <section id="account">
-            <h2>You are Logged In</h2>
-            <button onclick="app.logout()">Log out</button>
-            <button onclick="app.Router.go('/account/favorites')">Your Favorites</button>
-            <button onclick="app.Router.go('/account/watchlist')">Your Watchlist</button>
-            <!-- NEW -->
-            <button onclick="app.addPasskey()">Add a Passkey for faster login</button>
-        </section>
-    </template>      
+<template id="template-account">
+  <section id="account">
+    <h2>You are Logged In</h2>
+    <button onclick="app.logout()">Log out</button>
+    <button onclick="app.Router.go('/account/favorites')">
+      Your Favorites
+    </button>
+    <button onclick="app.Router.go('/account/watchlist')">
+      Your Watchlist
+    </button>
+    <!-- NEW -->
+    <button onclick="app.addPasskey()">Add a Passkey for faster login</button>
+  </section>
+</template>
 ```
 
 And also the template-login removing the `required` attribute for the password:
 
 ```html
- <template id="template-login">
-        <section>
-            <h2>Login into Your Account</h2>
-            <form onsubmit="app.login(event)">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" placeholder="Email" required autocomplete="email">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
-                <button>Log In</button>
+<template id="template-login">
+  <section>
+    <h2>Login into Your Account</h2>
+    <form onsubmit="app.login(event)">
+      <label for="login-email">Email</label>
+      <input
+        type="email"
+        id="login-email"
+        placeholder="Email"
+        required
+        autocomplete="email"
+      />
+      <label for="login-password">Password</label>
+      <input
+        type="password"
+        id="login-password"
+        placeholder="Password"
+        autocomplete="current-password"
+      />
+      <button>Log In</button>
 
-                <!-- NEW -->
-                <button type="button" onclick="app.loginWithPasskey()">Log In with a Passkey</button>
+      <!-- NEW -->
+      <button type="button" onclick="app.loginWithPasskey()">
+        Log In with a Passkey
+      </button>
 
-                <p>If you don't have an account, please <a href="/account/register">register</a>.</p>
-            </form>
-        </section>
-    </template>    
+      <p>
+        If you don't have an account, please
+        <a href="/account/register">register</a>.
+      </p>
+    </form>
+  </section>
+</template>
 ```
 
 ### I8 - Passkey Services
 
-Create a new Service *services/Passkey.js*
+Create a new Service _services/Passkey.js_
 
 ```js
 export const Passkeys = {
-    register: async (username) => {
-        try {
-            // Get registration options with the challenge.
-            const response = await fetch('/api/passkey/registration-begin', {
-                method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": app.Store.jwt ? `Bearer ${app.Store.jwt}` : null
-                },                
-                body: JSON.stringify({username: username})
-            });
-    
-            // Check if the options are ok.
-            if (!response.ok) {
-                const err = await response.json();
-                app.showError('Failed to get registration options from server.' + err)
-            }
-    
-            const options = await response.json();
-    
-            // This triggers the browser to display the passkey modal 
-            // A new public-private-key pair is created.
-            const attestationResponse = await SimpleWebAuthnBrowser.startRegistration({optionsJSON: options.publicKey});
-    
-            // Send attestationResponse back to server for verification and storage.
-            const verificationResponse = await fetch('/api/passkey/registration-end', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": app.Store.jwt ? `Bearer ${app.Store.jwt}` : null
-                },
-                body: JSON.stringify(attestationResponse)
-            });
-    
-            const msg = await verificationResponse.json();
-            if (verificationResponse.ok) {
-                app.showError("Your passkey was saved. You can use it next time to login")
-            } else {
-                app.showError(msg, false);
-            }
-        } catch (e) {
-            app.showError('Error: ' + e.message, false);
-        }        
-    },
-    authenticate: async (email) => {
-        try {
-            // Get login options from your server with the challenge
-            const response = await fetch('/api/passkey/authentication-begin', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email})
-            });
-            const options = await response.json();
-    
-            // This triggers the browser to display the passkey / WebAuthn modal 
-            // The challenge has been signed after this.
-            const assertionResponse = await SimpleWebAuthnBrowser.startAuthentication({optionsJSON: options.publicKey});
-    
-            // Send assertionResponse back to server for verification.
-            const verificationResponse = await fetch('/api/passkey/authentication-end', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(assertionResponse)
-            });
-    
-            const serverResponse = await verificationResponse.json();
-            if (serverResponse.success) {
-                app.Store.jwt = serverResponse.jwt;
-                app.Router.go("/account/")
-            } else {
-                app.showError(msg, false);
-            }
-        } catch (e) {
-            console.log(e)
-            app.showError('We couldn\'t authenticate you using a Passkey', false);
-        }        
+  register: async (username) => {
+    try {
+      // Get registration options with the challenge.
+      const response = await fetch('/api/passkey/registration-begin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: app.Store.jwt ? `Bearer ${app.Store.jwt}` : null,
+        },
+        body: JSON.stringify({ username: username }),
+      })
+
+      // Check if the options are ok.
+      if (!response.ok) {
+        const err = await response.json()
+        app.showError('Failed to get registration options from server.' + err)
+      }
+
+      const options = await response.json()
+
+      // This triggers the browser to display the passkey modal
+      // A new public-private-key pair is created.
+      const attestationResponse = await SimpleWebAuthnBrowser.startRegistration(
+        { optionsJSON: options.publicKey }
+      )
+
+      // Send attestationResponse back to server for verification and storage.
+      const verificationResponse = await fetch(
+        '/api/passkey/registration-end',
+        {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: app.Store.jwt ? `Bearer ${app.Store.jwt}` : null,
+          },
+          body: JSON.stringify(attestationResponse),
+        }
+      )
+
+      const msg = await verificationResponse.json()
+      if (verificationResponse.ok) {
+        app.showError(
+          'Your passkey was saved. You can use it next time to login'
+        )
+      } else {
+        app.showError(msg, false)
+      }
+    } catch (e) {
+      app.showError('Error: ' + e.message, false)
     }
+  },
+  authenticate: async (email) => {
+    try {
+      // Get login options from your server with the challenge
+      const response = await fetch('/api/passkey/authentication-begin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const options = await response.json()
+
+      // This triggers the browser to display the passkey / WebAuthn modal
+      // The challenge has been signed after this.
+      const assertionResponse = await SimpleWebAuthnBrowser.startAuthentication(
+        { optionsJSON: options.publicKey }
+      )
+
+      // Send assertionResponse back to server for verification.
+      const verificationResponse = await fetch(
+        '/api/passkey/authentication-end',
+        {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(assertionResponse),
+        }
+      )
+
+      const serverResponse = await verificationResponse.json()
+      if (serverResponse.success) {
+        app.Store.jwt = serverResponse.jwt
+        app.Router.go('/account/')
+      } else {
+        app.showError(msg, false)
+      }
+    } catch (e) {
+      console.log(e)
+      app.showError("We couldn't authenticate you using a Passkey", false)
+    }
+  },
 }
 ```
 
 ### I9 - App Controller
 
-In *app.js* add
+In _app.js_ add
 
 ```js
     addPasskey: async () => {
@@ -3544,14 +3625,14 @@ In *app.js* add
         } else {
             await Passkeys.authenticate(username);
         }
-    }    
+    }
 ```
 
 ### J-Server-Side render
 
 ### J1 - Create a new handler
 
-Create *handlers/ssr_handler.go*
+Create _handlers/ssr_handler.go_
 
 ```go
 package handlers
@@ -3693,7 +3774,7 @@ func renderMovieDetails(w io.Writer, movie models.Movie) error {
 
 ### J2 - Register the handler for the route
 
-At *main.go* replace the current `/movies/` handler with:
+At _main.go_ replace the current `/movies/` handler with:
 
 ```go
 http.HandleFunc("/movies/", func(w http.ResponseWriter, r *http.Request) {
@@ -3713,45 +3794,47 @@ Add to `app.webmanifest` the `display: standalone`, `scope` and `start_url` attr
 
 ### K2 - Create a Service Worker
 
-Create *sw.js* in the root of the public folder:
+Create _sw.js_ in the root of the public folder:
 
 ```js
 // service-worker.js
 
-const CACHE_NAME = 'my-cache-v1';
+const CACHE_NAME = 'my-cache-v1'
 
 // Install event - precache any initial resources if needed
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(() => {
-        // Skip waiting to activate immediately
-        self.skipWaiting();
-      })
-  );
-});
+    caches.open(CACHE_NAME).then(() => {
+      // Skip waiting to activate immediately
+      self.skipWaiting()
+    })
+  )
+})
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => {
-      // Take control of clients immediately
-      return self.clients.claim();
-    })
-  );
-});
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheName !== CACHE_NAME) {
+              return caches.delete(cacheName)
+            }
+          })
+        )
+      })
+      .then(() => {
+        // Take control of clients immediately
+        return self.clients.claim()
+      })
+  )
+})
 
 // Fetch event - handle caching strategies
 self.addEventListener('fetch', (event) => {
-  const requestUrl = new URL(event.request.url);
+  const requestUrl = new URL(event.request.url)
 
   // Handle /api/ requests (network first, cache fallback)
   if (requestUrl.pathname.startsWith('/api/')) {
@@ -3760,19 +3843,20 @@ self.addEventListener('fetch', (event) => {
         .then((networkResponse) => {
           // Cache successful network response
           return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
+            cache.put(event.request, networkResponse.clone())
+            return networkResponse
+          })
         })
         .catch(() => {
           // If network fails, try cache
-          return caches.match(event.request)
-            .then((cachedResponse) => {
-              return cachedResponse || Promise.reject('No network or cache available');
-            });
+          return caches.match(event.request).then((cachedResponse) => {
+            return (
+              cachedResponse || Promise.reject('No network or cache available')
+            )
+          })
         })
-    );
-  } 
+    )
+  }
   // Handle all other requests (stale-while-revalidate)
   else {
     event.respondWith(
@@ -3782,26 +3866,26 @@ self.addEventListener('fetch', (event) => {
           const fetchPromise = fetch(event.request)
             .then((networkResponse) => {
               // Update cache with new response
-              cache.put(event.request, networkResponse.clone());
-              return networkResponse;
+              cache.put(event.request, networkResponse.clone())
+              return networkResponse
             })
             .catch((error) => {
-              console.error('Fetch failed:', error);
-            });
+              console.error('Fetch failed:', error)
+            })
 
           // Return cached version if available, otherwise wait for network
-          return cachedResponse || fetchPromise;
-        });
+          return cachedResponse || fetchPromise
+        })
       })
-    );
+    )
   }
-});
+})
 ```
 
 ### K3 - Register the Service Worker
 
-In *app.js* change the `DOMContentLoad` event with:
+In _app.js_ change the `DOMContentLoad` event with:
 
 ```js
-    navigator.serviceWorker.register("/sw.js")
+navigator.serviceWorker.register('/sw.js')
 ```
