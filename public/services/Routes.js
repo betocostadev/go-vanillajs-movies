@@ -1,3 +1,4 @@
+import { AccountPage } from '../components/AccountPage.js'
 import { HomePage } from '../components/HomePage.js'
 import { LoginPage } from '../components/LoginPage.js'
 import { MovieDetailsPage } from '../components/MovieDetailsPage.js'
@@ -27,10 +28,11 @@ export const routes = [
     path: '/account/login/',
     component: LoginPage,
   },
-  // {
-  //   path: '/account/',
-  //   component: AccountPage,
-  // },
+  {
+    path: '/account/',
+    component: AccountPage,
+    loggedIn: true,
+  },
   // {
   //   path: '/account/favorites',
   //   component: FavoritesPage,

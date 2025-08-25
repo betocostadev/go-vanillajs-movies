@@ -4,6 +4,7 @@ import { API } from './services/API.js'
 import './components/YoutubeEmbed.js'
 import './components/AnimatedLoading.js'
 import { Router } from './services/Router.js'
+import Store from './services/Store.js'
 // console.log(API)
 window.addEventListener('DOMContentLoaded', () => {
   app.Router.init()
@@ -17,6 +18,7 @@ const getFieldValueById = (id) => {
 window.app = {
   api: API,
   Router,
+  Store,
   showError: (message = 'There was an error.', goToHome = false) => {
     document.getElementById('alert-modal').showModal()
     document.querySelector('#alert-modal p').textContent = message
@@ -62,10 +64,10 @@ window.app = {
     if (errors.length === 0) {
       const response = await API.register(name, email, password)
       if (response.success) {
-        console.log(response)
-        app.Router.go('/account/')
+        app.Store.jwt = response.jwt
+        app.app.Router.go('/account/')
       } else {
-        // show server error
+        console.log(error)
         app.showError(response.message)
       }
     } else {
@@ -85,7 +87,7 @@ window.app = {
     if (errors.length === 0) {
       const response = await API.login(email, password)
       if (response.success) {
-        console.log(response)
+        app.Store.jwt = response.jwt
         app.Router.go('/account/')
       } else {
         // show server error
@@ -94,5 +96,9 @@ window.app = {
     } else {
       app.showError(errors.join('. '))
     }
+  },
+  logout: async () => {
+    Store.jwt = null
+    app.Router.go('/')
   },
 }

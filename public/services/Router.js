@@ -29,11 +29,13 @@ export const Router = {
     // grab only the path, like: /search?movie=batman - /search
     const routePath = route.includes('?') ? route.split('?')[0] : route
 
+    let isProtected = false
+
     for (const r of routes) {
       if (typeof r.path === 'string' && r.path === routePath) {
         // string path ex: /movies
         pageElement = new r.component()
-        break
+        pageElement.loggedIn = r.loggedIn
       } else if (r.path instanceof RegExp) {
         // RegExp path ex: /\/movies\/(\d+)/
         const match = r.path.exec(route)
@@ -41,9 +43,20 @@ export const Router = {
           // route params
           const params = match.slice(1)
           pageElement = new r.component()
+          pageElement.loggedIn = r.loggedIn
           pageElement.params = params
-          break
         }
+      }
+
+      isProtected = r.loggedIn === true
+
+      if (pageElement) {
+        // A page was found, we checked if we have access to it.
+        if (isProtected && app.Store.loggedIn == false) {
+          app.Router.go('/account/login/')
+          return
+        }
+        break
       }
     }
 

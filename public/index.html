@@ -106,6 +106,7 @@
     </section>
   </template> 
 
+  <!-- Register page template -->
   <template id="template-register">
     <section>
       <h2>Register a New Account</h2>
@@ -123,6 +124,7 @@
       </form>
     </section>
   </template>
+  <!-- Login page template -->
   <template id="template-login">
     <section>
       <h2>Login into Your Account</h2>
@@ -136,6 +138,15 @@
       </form>
     </section>
     </template> 
+    <!-- Account page template -->
+    <template id="template-account">
+      <section id="account">
+        <h2>You are Logged In</h2>
+        <button onclick="app.logout()">Log out</button>
+        <button onclick="app.Router.go('/account/favorites')">Your Favorites</button>
+        <button onclick="app.Router.go('/account/watchlist')">Your Watchlist</button>
+      </section>
+    </template>        
 
   <footer>
     <p>Movies DB - ReelingIt (Frontend Masters)</p>
