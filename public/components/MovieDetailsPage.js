@@ -5,7 +5,6 @@ export class MovieDetailsPage extends HTMLElement {
   movie = null
 
   async render() {
-    console.log('received id: ', this.id)
     try {
       this.movie = await API.getMovieById(this.id)
     } catch (error) {

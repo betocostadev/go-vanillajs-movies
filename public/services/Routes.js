@@ -4,6 +4,8 @@ import { LoginPage } from '../components/LoginPage.js'
 import { MovieDetailsPage } from '../components/MovieDetailsPage.js'
 import { MoviesPage } from '../components/MoviesPage.js'
 import { RegisterPage } from '../components/RegisterPage.js'
+import { FavoritePage } from '../components/FavoritePage.js'
+import { WatchlistPage } from '../components/WatchlistPage.js'
 
 // Use regexes to generate dynamic routes
 export const routes = [
@@ -33,12 +35,14 @@ export const routes = [
     component: AccountPage,
     loggedIn: true,
   },
-  // {
-  //   path: '/account/favorites',
-  //   component: FavoritesPage,
-  // },
-  // {
-  //   path: '/account/watchlist',
-  //   component: WatchlistPage,
-  // },
+  {
+    path: '/account/favorites',
+    component: FavoritePage,
+    loggedIn: true,
+  },
+  {
+    path: '/account/watchlist',
+    component: WatchlistPage,
+    loggedIn: true,
+  },
 ]

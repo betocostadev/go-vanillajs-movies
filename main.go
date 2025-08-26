@@ -87,6 +87,13 @@ func main() {
 	http.HandleFunc(routes.AccountRegisterRoute, accountHandler.Register)
 	http.HandleFunc(routes.AccountAuthenticateRoute, accountHandler.Authenticate)
 
+	// Protected - we could have many routes and api calls designed to be used
+	// with the user id for protection, this is why we use a middleware here
+	http.Handle(routes.AccountFavorites, accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.GetFavorites)))
+	http.Handle(routes.AccountWatchlist, accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.GetWatchlist)))
+	http.Handle(routes.SaveToCollection,
+		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.SaveToCollection)))
+
 	catchAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/index.html")
 	}

@@ -146,7 +146,16 @@
         <button onclick="app.Router.go('/account/favorites')">Your Favorites</button>
         <button onclick="app.Router.go('/account/watchlist')">Your Watchlist</button>
       </section>
-    </template>        
+    </template>     
+    <!-- User collection -->
+     <template id="template-collection">
+      <section>
+        <ul id="movies-result">
+          <animated-loading data-elements="5" data-width="150px" data-height="220px">
+          </animated-loading> 
+        </ul>
+      </section>
+    </template>  
 
   <footer>
     <p>Movies DB - ReelingIt (Frontend Masters)</p>

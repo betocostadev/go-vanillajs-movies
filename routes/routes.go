@@ -14,4 +14,9 @@ const (
 	// Account API endpoints
 	AccountRegisterRoute     = "/api/account/register/"
 	AccountAuthenticateRoute = "/api/account/authenticate/"
+
+	// Protected API endpoints
+	AccountFavorites = "/api/account/favorites/"
+	AccountWatchlist = "/api/account/watchlist/"
+	SaveToCollection = "/api/account/save-to-collection/"
 )
