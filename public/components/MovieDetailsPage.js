@@ -8,10 +8,10 @@ export class MovieDetailsPage extends HTMLElement {
     try {
       this.movie = await API.getMovieById(this.id)
     } catch (error) {
-      // TODO: Alert the user
+      app.showError()
       console.log(error)
-      return
     }
+
     const template = document.getElementById('template-movie-details')
     const content = template.content.cloneNode(true)
     this.appendChild(content)
@@ -37,6 +37,20 @@ export class MovieDetailsPage extends HTMLElement {
       li.textContent = genre.name
       ulGenres.appendChild(li)
     })
+
+    // buttons are inside the section with the id actions
+    this.querySelector('#actions #btnFavorites').addEventListener(
+      'click',
+      () => {
+        app.saveToCollection(this.movie.id, 'favorite')
+      }
+    )
+    this.querySelector('#actions #btnWatchlist').addEventListener(
+      'click',
+      () => {
+        app.saveToCollection(this.movie.id, 'watchlist')
+      }
+    )
 
     const ulCast = this.querySelector('#cast')
     ulCast.innerHTML = ''
